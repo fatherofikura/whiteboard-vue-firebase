@@ -8,6 +8,8 @@
 <script>
 import Home from "./components/Home.vue";
 import Whiteboard from "./components/Whiteboard.vue";
+import firebase from 'firebase/app'
+import 'firebase/auth'
 
 export default {
   name: 'app',
