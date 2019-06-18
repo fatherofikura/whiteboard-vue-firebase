@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <Home v-if="!isLogin"></Home>
-    <Whiteboard v-if="isLogin" :user="userData"></Whiteboard>
+    <pulse-loader v-if="!loading"></pulse-loader>
+    <Home v-if="!isLogin && loading"></Home>
+    <Whiteboard v-if="isLogin && loading" :user="userData"></Whiteboard>
   </div>
 </template>
 
@@ -9,6 +10,7 @@
 import Home from "./components/Home.vue";
 import Whiteboard from "./components/Whiteboard.vue";
 import firebase from 'firebase/app'
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import 'firebase/auth'
 
 export default {
@@ -16,14 +18,16 @@ export default {
   data () {
     return {
       isLogin: false,
-      userData: null
+      userData: null,
+      loading: false
     };
   },
   components: {
     Home: Home,
-    Whiteboard: Whiteboard
+    Whiteboard: Whiteboard,
+    PulseLoader: PulseLoader
   },
-  created: function() {
+  beforeCreate: function() {
     firebase.auth().onAuthStateChanged( user=> {
       console.log(user);
       if (user) {
@@ -34,6 +38,7 @@ export default {
         this.isLogin = false;
         this.userData = null;
       };
+      this.loading=true;
     });
   }
 };
