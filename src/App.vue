@@ -12,6 +12,11 @@ import Whiteboard from "./components/Whiteboard.vue";
 import firebase from 'firebase/app'
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import 'firebase/auth'
+import Vue from 'vue'
+import Buefy from 'buefy'
+import 'buefy/dist/buefy.css'
+
+Vue.use(Buefy)
 
 export default {
   name: 'app',

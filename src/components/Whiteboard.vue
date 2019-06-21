@@ -1,20 +1,35 @@
 <template>
   <div class="whiteboard">
-    <h1>Whiteboard画面</h1>
-    <span>{{ user.displayName }}</span>
-    <button @click="logout">ログアウト</button>
+    <h1>Whiteboard</h1>
+    <section>
+      <button class="button" @click="isComponentModalActive = true">Regist(Member)</button>
+      <b-modal :active.sync="isComponentModalActive" has-modal-card>
+        <registration-form v-bind="formProps"></registration-form>
+      </b-modal>
+      <button class="button" @click="logout">Logout</button>
+    </section>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import RegistrationForm from "./RegistrationForm.vue";
 
 export default {
+  components: {
+    RegistrationForm
+  },
   name: "whiteboard",
-  props: ["user"],
   data() {
-    return {};
+    return {
+      isComponentModalActive: false,
+      formProps: {
+        Name: '',
+        phoneNumber: '',
+        posision: ''
+      }
+    };
   },
   methods: {
     logout : function() {

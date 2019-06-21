@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <h1>{{ msg }}</h1>
-    <button @click="googleLogin">Googleアカウントでログイン</button>
+    <b-button @click="googleLogin">Login(Google Account)</b-button>
   </div>
 </template>
 
