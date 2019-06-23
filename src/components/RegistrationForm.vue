@@ -29,6 +29,17 @@ export default {
   props: ['Name', 'phoneNumber', 'posision'],
   methods: {
     registMember : function() {
+      // Initialize Cloud Functions through Firebase
+      var functions = firebase.functions();
+
+      // Call Functaion
+      var messageText = "hogehoge";
+      var addMessage = firebase.functions().httpsCallable('addMessage');
+      addMessage({text: messageText}).then(function(result) {
+        // Read result of the Cloud Function.
+        var sanitizedMessage = result.data.text;
+        console.log(sanitizedMessage);
+      });
     }
   }
 };
