@@ -7,6 +7,7 @@
         <registration-form v-bind="formProps"></registration-form>
       </b-modal>
       <button class="button" @click="logout">Logout</button>
+      <button class="button" @click="testFunction">test</button>
     </section>
   </div>
 </template>
@@ -34,6 +35,19 @@ export default {
   methods: {
     logout : function() {
       firebase.auth().signOut();
+    },
+    testFunction : function() {
+      // Initialize Cloud Functions through Firebase
+      var functions = firebase.functions();
+
+      // Call Functaion
+      var messageText = "hogehoge";
+      var addMessage = firebase.functions().httpsCallable('addMessage');
+      addMessage({text: messageText}).then(function(result) {
+        // Read result of the Cloud Function.
+        var sanitizedMessage = result.data.text;
+        console.log(sanitizedMessage);
+      });
     }
   }
 };
