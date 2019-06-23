@@ -15,6 +15,7 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/functions'
 import RegistrationForm from "./RegistrationForm.vue";
 
 export default {
@@ -37,9 +38,6 @@ export default {
       firebase.auth().signOut();
     },
     testFunction : function() {
-      // Initialize Cloud Functions through Firebase
-      var functions = firebase.functions();
-
       // Call Functaion
       var messageText = "hogehoge";
       var addMessage = firebase.functions().httpsCallable('addMessage');
