@@ -7,7 +7,6 @@
         <registration-form v-bind="formProps"></registration-form>
       </b-modal>
       <button class="button" @click="logout">Logout</button>
-      <button class="button" @click="testFunction">test</button>
     </section>
   </div>
 </template>
@@ -15,7 +14,6 @@
 <script>
 import firebase from 'firebase/app'
 import 'firebase/auth'
-import 'firebase/functions'
 import RegistrationForm from "./RegistrationForm.vue";
 
 export default {
@@ -36,16 +34,6 @@ export default {
   methods: {
     logout : function() {
       firebase.auth().signOut();
-    },
-    testFunction : function() {
-      // Call Functaion
-      var messageText = "hogehoge";
-      var addMessage = firebase.functions().httpsCallable('addMessage');
-      addMessage({text: messageText}).then(function(result) {
-        // Read result of the Cloud Function.
-        var sanitizedMessage = result.data.text;
-        console.log(sanitizedMessage);
-      });
     }
   }
 };

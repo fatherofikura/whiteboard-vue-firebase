@@ -25,6 +25,10 @@
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/functions'
+
 export default {
   props: ['Name', 'phoneNumber', 'posision'],
   methods: {

@@ -9,8 +9,8 @@
 <script>
 import Home from "./components/Home.vue";
 import Whiteboard from "./components/Whiteboard.vue";
-import firebase from 'firebase/app'
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import firebase from 'firebase/app'
 import 'firebase/auth'
 import Vue from 'vue'
 import Buefy from 'buefy'
