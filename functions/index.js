@@ -8,7 +8,7 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 // Saves a message to the Firebase Realtime Database but sanitizes the text by removing swearwords.
-exports.addMessage = functions.https.onCall((data, context) => {
+exports.addMessage = functions.https.onCall( async (data, context) => {
     // Message text passed from the client.
     const text = data.text;
 
@@ -18,6 +18,7 @@ exports.addMessage = functions.https.onCall((data, context) => {
     const picture = context.auth.token.picture || null;
     const email = context.auth.token.email || null;
 
+    /*
     // Saving the new message to the Realtime Database.
     const sanitizedMessage = sanitizer.sanitize(text); // Sanitize the message.
     return admin.database().ref('/messages').push({
@@ -28,4 +29,15 @@ exports.addMessage = functions.https.onCall((data, context) => {
         // Returning the sanitized message to the client.
         return { text: sanitizedMessage };
     })
+    */
+
+    // Saving the new message to the Realtime Database.
+    const sanitizedMessage = sanitizer.sanitize(text); // Sanitize the message.
+    await admin.database().ref('/messages').push({
+      text: sanitizedMessage,
+      author: { uid, name, picture, email },
+    });
+    console.log('New Message written');
+    // Returning the sanitized message to the client.
+    return { text: sanitizedMessage };
 });
