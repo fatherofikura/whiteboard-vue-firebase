@@ -46,3 +46,41 @@ exports.addMessage = functions.https.onCall( (data, context) => {
     throw new functions.https.HttpsError('unknown', error.message, error);
   });
 });
+
+exports.insertMember = functions.https.onCall( (data, context) => {
+  const name = data.name;
+  const phoneNumber = data.phoneNumber;
+  const position = data.position;
+
+  // Checking attribute.
+  if (!(typeof name === 'string') || name.length === 0) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+      'one arguments "name" containing the name to add.');
+  }
+
+  // Checking that the user is authenticated.
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+      'while authenticated.');
+  }
+
+  // A post entry.
+  var postData = {
+    name: name,
+    phoneNumber: phoneNumber,
+    position: position
+  };
+
+  // return admin.database().ref('/messages').push(postData);
+
+  // Get a key for a new Post.
+  var newPostKey = admin.database().ref().child('posts').push().key;
+
+  // Write the new post's data simultaneously in the posts list and the user's post list.
+  var updates = {};
+  updates['/posts/' + newPostKey] = postData;
+
+  return admin.database().ref().update(updates);
+});

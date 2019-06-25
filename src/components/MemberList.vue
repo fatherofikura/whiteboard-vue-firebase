@@ -39,19 +39,25 @@ export default {
   watch: {
     newMember: {
       handler: function (val, oldVal) {
-        console.log('functions前');
-
         // Call Functaion
+
+        /*
         var messageText = "hogehoge";
         var addMessage = firebase.functions().httpsCallable('addMessage');
-        addMessage({text: messageText}).then(function(result) {
+        var postdata = {
+          text: messageText
+        };
+        */
+        var addMessage = firebase.functions().httpsCallable('insertMember');
+        var postdata = {
+          name : this.newMember.memberName,
+          phoneNumber : this.newMember.memberPhoneNumber,
+          position : this.newMember.memberPhoneNumber
+        };
+        addMessage(postdata).then(function(result) {
           // Read result of the Cloud Function.
           var sanitizedMessage = result.data.text;
           console.log(sanitizedMessage);
-        }).then(() => {
-          alert();
-        }).then(() => {
-          console.log('functions後');
         }).catch(function(error) {
           // Getting the Error details.
           var code = error.code;

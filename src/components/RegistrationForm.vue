@@ -9,7 +9,7 @@
           <b-input placeholder="Your Name" v-model="name" required></b-input>
         </b-field>
         <b-field label="Phone Number">
-          <b-input placeholder="Your Phone Number" v-model="phoneNumber" required></b-input>
+          <b-input placeholder="Your Phone Number" v-model="phoneNumber"></b-input>
         </b-field>
         <b-field label="Position">
           <b-input placeholder="Your Position" v-model="position"></b-input>
