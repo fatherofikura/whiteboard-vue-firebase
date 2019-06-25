@@ -47,7 +47,9 @@ exports.addMessage = functions.https.onCall( (data, context) => {
   });
 });
 
-// メンバー追加用
+// ------------------------------------------
+// メンバー情報追加用
+// ------------------------------------------
 exports.insertMember = functions.https.onCall( (data, context) => {
   const name = data.name;
   const phoneNumber = data.phoneNumber;
@@ -79,4 +81,19 @@ exports.insertMember = functions.https.onCall( (data, context) => {
   var updates = {};
   updates['/member/' + newPostKey] = postData;
   return admin.database().ref().update(updates);
+});
+
+// ------------------------------------------
+// メンバー情報参照用
+// ------------------------------------------
+exports.selectMember = functions.https.onCall( (data, context) => {
+  // Checking that the user is authenticated.
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+      'while authenticated.');
+  }
+
+  // Get a Member.
+  return admin.database().ref('member').once('value');
 });
