@@ -2,9 +2,8 @@
   <div class="memberlist">
     <b-button class="button" @click="isComponentModalActive = true">Regist(Member)</b-button>
     <b-modal :active.sync="isComponentModalActive" has-modal-card>
-      <registration-form v-bind="formProps" v-on:registed="setMember"></registration-form>
+      <registration-form v-bind="newMember" v-on:registed="setNewMember"></registration-form>
     </b-modal>
-    <b-button class="button" @click="registMember">TestFunc</b-button>
   </div>
 </template>
 
@@ -22,7 +21,7 @@ export default {
   data() {
     return {
       isComponentModalActive: false,
-      formProps: {
+      newMember: {
         memberName: 'Test Taro',
         memberPhoneNumber: '222',
         memberPosition: 'Manager'
@@ -30,35 +29,40 @@ export default {
     };
   },
   methods: {
-    setMember : function(info) {
-      this.formProps.memberName = info.memberName;
-      this.formProps.memberPhoneNumber = info.memberPhoneNumber;
-      this.formProps.memberPosition = info.memberPosition;
+    setNewMember : function(info) {
+      this.newMember.memberName = info.memberName;
+      this.newMember.memberPhoneNumber = info.memberPhoneNumber;
+      this.newMember.memberPosition = info.memberPosition;
       this.isComponentModalActive = false;
-    },
-    registMember : function() {
-      console.log('functions前');
+    }
+  },
+  watch: {
+    newMember: {
+      handler: function (val, oldVal) {
+        console.log('functions前');
 
-      // Call Functaion
-      var messageText = "hogehoge";
-      var addMessage = firebase.functions().httpsCallable('addMessage');
-      addMessage({text: messageText}).then(function(result) {
-        // Read result of the Cloud Function.
-        var sanitizedMessage = result.data.text;
-        console.log(sanitizedMessage);
-      }).then(() => {
-        alert();
-      }).then(() => {
-        console.log('functions後');
-      }).catch(function(error) {
-        // Getting the Error details.
-        var code = error.code;
-        var message = error.message;
-        var details = error.details;
-        console.error('There was an error when calling the Cloud Function', error);
-        window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
-        + code + '\nError Message:' + message + '\nError Details:' + details);
-      });
+        // Call Functaion
+        var messageText = "hogehoge";
+        var addMessage = firebase.functions().httpsCallable('addMessage');
+        addMessage({text: messageText}).then(function(result) {
+          // Read result of the Cloud Function.
+          var sanitizedMessage = result.data.text;
+          console.log(sanitizedMessage);
+        }).then(() => {
+          alert();
+        }).then(() => {
+          console.log('functions後');
+        }).catch(function(error) {
+          // Getting the Error details.
+          var code = error.code;
+          var message = error.message;
+          var details = error.details;
+          console.error('There was an error when calling the Cloud Function', error);
+          window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
+          + code + '\nError Message:' + message + '\nError Details:' + details);
+        });
+      },
+      deep: true
     }
   }
 };
