@@ -40,6 +40,9 @@ export default {
     registMember : function() {
       console.log('functions前');
 
+      // Initialize Cloud Functions through Firebase
+      var functions = firebase.functions();
+
       // Call Functaion
       var messageText = "hogehoge";
       var addMessage = firebase.functions().httpsCallable('addMessage');
@@ -48,7 +51,16 @@ export default {
         var sanitizedMessage = result.data.text;
         console.log(sanitizedMessage);
       }).then(() => {
+        alert();
+      }).then(() => {
         console.log('functions後');
+      }).catch(function(error) {
+        // Getting the Error details.
+        var code = error.code;
+        var message = error.message;
+        var details = error.details;
+        console.error('There was an error when calling the Cloud Function', error);
+        alert();
       });
     }
   }
