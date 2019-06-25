@@ -47,6 +47,7 @@ exports.addMessage = functions.https.onCall( (data, context) => {
   });
 });
 
+// メンバー追加用
 exports.insertMember = functions.https.onCall( (data, context) => {
   const name = data.name;
   const phoneNumber = data.phoneNumber;
@@ -65,7 +66,6 @@ exports.insertMember = functions.https.onCall( (data, context) => {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
       'while authenticated.');
   }
-
   // A post entry.
   var postData = {
     name: name,
@@ -73,14 +73,10 @@ exports.insertMember = functions.https.onCall( (data, context) => {
     position: position
   };
 
-  // return admin.database().ref('/messages').push(postData);
-
   // Get a key for a new Post.
-  var newPostKey = admin.database().ref().child('posts').push().key;
-
+  var newPostKey = admin.database().ref().child('member').push().key;
   // Write the new post's data simultaneously in the posts list and the user's post list.
   var updates = {};
-  updates['/posts/' + newPostKey] = postData;
-
+  updates['/member/' + newPostKey] = postData;
   return admin.database().ref().update(updates);
 });

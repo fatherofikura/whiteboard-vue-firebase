@@ -40,14 +40,6 @@ export default {
     newMember: {
       handler: function (val, oldVal) {
         // Call Functaion
-
-        /*
-        var messageText = "hogehoge";
-        var addMessage = firebase.functions().httpsCallable('addMessage');
-        var postdata = {
-          text: messageText
-        };
-        */
         var addMessage = firebase.functions().httpsCallable('insertMember');
         var postdata = {
           name : this.newMember.memberName,
@@ -56,8 +48,7 @@ export default {
         };
         addMessage(postdata).then(function(result) {
           // Read result of the Cloud Function.
-          var sanitizedMessage = result.data.text;
-          console.log(sanitizedMessage);
+          console.log(result);
         }).catch(function(error) {
           // Getting the Error details.
           var code = error.code;
