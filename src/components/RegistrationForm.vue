@@ -6,19 +6,18 @@
       </header>
       <section class="modal-card-body">
         <b-field label="Name">
-          <b-input :value="memberName" placeholder="Your Name" required></b-input>
+          <b-input placeholder="Your Name" v-model="name" required></b-input>
         </b-field>
         <b-field label="Phone Number">
-          <b-input :value="memberPhoneNumber" placeholder="Your Phone Number" required></b-input>
+          <b-input placeholder="Your Phone Number" v-model="phoneNumber" required></b-input>
         </b-field>
         <b-field label="Position">
-          <b-input :value="memberPosition" placeholder="Your Position"></b-input>
+          <b-input placeholder="Your Position" v-model="position"></b-input>
         </b-field>
       </section>
-
       <footer class="modal-card-foot">
-        <button class="button" @click="$parent.close()">Close</button>
-        <button class="button" @click="registMemberChild">Registration</button>
+        <b-button class="button" @click="$parent.close()">Close</b-button>
+        <b-button class="button" @click="registMemberChild">Registration</b-button>
       </footer>
     </div>
   </form>
@@ -27,9 +26,22 @@
 <script>
 export default {
   props: ['memberName', 'memberPhoneNumber', 'memberPosition'],
+  data() {
+    return {
+      name: this.memberName,
+      phoneNumber: this.memberPhoneNumber,
+      position: this.memberPosition
+    }
+  },
   methods: {
     registMemberChild : function() {
-      this.$emit('registed');
+      var memberInfo = {
+        memberName : this.name,
+        memberPhoneNumber : this.phoneNumber,
+        memberPosition : this.position,
+      };
+      console.log(memberInfo);
+      this.$emit('registed', memberInfo );
     }
   }
 };
