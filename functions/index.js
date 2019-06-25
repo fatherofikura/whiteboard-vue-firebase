@@ -95,5 +95,7 @@ exports.selectMember = functions.https.onCall( (data, context) => {
   }
 
   // Get a Member.
-  return admin.database().ref('member').once('value');
+  return admin.database().ref('/member').once('value', (snapshot) => {
+    console.log('value', snapshot.val())
+  })
 });
