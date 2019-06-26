@@ -95,7 +95,16 @@ exports.selectMember = functions.https.onCall( (data, context) => {
   }
 
   // Get a Member.
+  /*
   return admin.database().ref('/member').once('value', (snapshot) => {
     console.log('value', snapshot.val())
   })
+  */
+  return admin.database().ref('/member').once(`value`).then(snapshot => {
+    console.log('value', snapshot.val());
+    return snapshot;
+  }).catch((error) => {
+    // Re-throwing the error as an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('unknown', error.message, error);
+  });
 });
