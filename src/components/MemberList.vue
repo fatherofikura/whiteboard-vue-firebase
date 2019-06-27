@@ -1,10 +1,47 @@
 <template>
   <div class="memberlist">
-    <b-button class="button" @click="isComponentModalActive = true">Regist(Member)</b-button>
-    <b-modal :active.sync="isComponentModalActive" has-modal-card>
-      <registration-form v-bind="newMember" v-on:registed="setNewMember"></registration-form>
-    </b-modal>
-    <b-button class="button" @click="selectMember">TestFunc</b-button>
+    <section>
+      <div class="columns is-multiline">
+        <div v-for="(Member, index) in displayMember" v-bind:key="index">
+          <div class="column">
+            <b-collapse class="card">
+              <div slot="trigger" slot-scope="props" class="card-header" role="button">
+                <p class="card-header-title">
+                  {{ Member.name }}
+                </p>
+                <a class="card-header-icon">
+                  <b-icon :icon="props.open ? 'menu-down' : 'menu-up'">
+                  </b-icon>
+                </a>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <b-taglist attached>
+                    <b-tag type="is-dark">Position</b-tag>
+                    <b-tag type>{{ Member.position }}</b-tag>
+                  </b-taglist>
+                  <b-taglist attached>
+                    <b-tag type="is-dark">Phone Number</b-tag>
+                    <b-tag type>{{ Member.phoneNumber }}</b-tag>
+                  </b-taglist>
+                </div>
+              </div>
+              <footer class="card-footer">
+                <a class="card-footer-item">Edit</a>
+                <a class="card-footer-item">Delete</a>
+              </footer>
+            </b-collapse>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <b-button class="button" @click="isComponentModalActive = true">Regist(Member)</b-button>
+      <b-modal :active.sync="isComponentModalActive" has-modal-card>
+        <registration-form v-bind="newMember" v-on:registed="setNewMember"></registration-form>
+      </b-modal>
+      <b-button class="button" @click="selectMember">TestFunc</b-button>
+    </section>
   </div>
 </template>
 
@@ -26,7 +63,8 @@ export default {
         memberName: '',
         memberPhoneNumber: '',
         memberPosition: ''
-      }
+      },
+      displayMember: {}
     };
   },
   methods: {
@@ -40,9 +78,11 @@ export default {
       // Call Functaion
       var callfunction = firebase.functions().httpsCallable('selectMember');
       var postdata = {};
+      var self = this;
       callfunction(postdata).then(function(result) {
         // Read result of the Cloud Function.
-        console.log(result);
+        self.displayMember = result.data;
+        console.log(self.displayMember);
       }).catch(function(error) {
         // Getting the Error details.
         var code = error.code;
@@ -62,7 +102,7 @@ export default {
         var postdata = {
           name : this.newMember.memberName,
           phoneNumber : this.newMember.memberPhoneNumber,
-          position : this.newMember.memberPhoneNumber
+          position : this.newMember.memberPosition
         };
         callfunction(postdata).then(function(result) {
           // Read result of the Cloud Function.

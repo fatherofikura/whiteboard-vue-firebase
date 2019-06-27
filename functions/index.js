@@ -80,7 +80,12 @@ exports.insertMember = functions.https.onCall( (data, context) => {
   // Write the new post's data simultaneously in the posts list and the user's post list.
   var updates = {};
   updates['/member/' + newPostKey] = postData;
-  return admin.database().ref().update(updates);
+  return admin.database().ref().update(updates).then( result => {
+    return admin.database().ref('/member').once(`value`)
+  }).then(snapshot => {
+    console.log('value', snapshot.val());
+    return snapshot.val();
+  });
 });
 
 // ------------------------------------------

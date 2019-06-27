@@ -1,12 +1,24 @@
 <template>
   <div class="whiteboard">
-    <h1>Whiteboard</h1>
-    <section>
-      <member-list></member-list>
-    </section>
-    <section>
-      <b-button class="button" @click="logout">Logout</b-button>
-    </section>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item">
+          <img src="logo.png">
+        </a>
+      </div>
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-light" @click="logout">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <br>
+    <br>
+    <member-list></member-list>
   </div>
 </template>
 

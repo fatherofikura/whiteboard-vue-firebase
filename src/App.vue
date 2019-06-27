@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <pulse-loader v-if="!loading"></pulse-loader>
-    <Home v-if="!isLogin && loading"></Home>
-    <Whiteboard v-if="isLogin && loading" :user="userData"></Whiteboard>
+    <div class="container">
+      <pulse-loader v-if="!loading"></pulse-loader>
+      <Home v-if="!isLogin && loading"></Home>
+      <Whiteboard v-if="isLogin && loading" :user="userData"></Whiteboard>
+    </div>
   </div>
 </template>
 
