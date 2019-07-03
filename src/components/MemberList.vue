@@ -35,12 +35,13 @@
         </div>
       </div>
     </section>
+    <br>
     <section>
-      <b-button class="button" @click="isComponentModalActive = true">Regist(Member)</b-button>
+      <b-button class="button" @click="isComponentModalActive = true">Regist</b-button>
       <b-modal :active.sync="isComponentModalActive" has-modal-card>
         <registration-form v-bind="newMember" v-on:registed="setNewMember"></registration-form>
       </b-modal>
-      <b-button class="button" @click="selectMember">TestFunc</b-button>
+      <b-button class="button" @click="selectMember">Update</b-button>
     </section>
   </div>
 </template>
@@ -49,6 +50,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/functions';
+import 'firebase/database';
 import RegistrationForm from "./RegistrationForm.vue";
 
 export default {
@@ -66,6 +68,12 @@ export default {
       },
       displayMember: {}
     };
+  },
+  created: function() {
+    var _this = this;
+    firebase.database().ref('/member').on('value', function(snapshot) {
+      _this.displayMember = snapshot.val(); // データに変化が起きたときに再取得する
+    });
   },
   methods: {
     setNewMember : function(info) {
@@ -104,9 +112,11 @@ export default {
           phoneNumber : this.newMember.memberPhoneNumber,
           position : this.newMember.memberPosition
         };
+        var self = this;
         callfunction(postdata).then(function(result) {
           // Read result of the Cloud Function.
           console.log(result);
+          self.displayMember = result.data;
         }).catch(function(error) {
           // Getting the Error details.
           var code = error.code;
