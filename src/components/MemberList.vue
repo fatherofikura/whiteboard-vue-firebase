@@ -10,8 +10,8 @@
                   {{ Member.name }}
                 </p>
                 <a class="card-header-icon">
-                  <b-icon :icon="props.open ? 'menu-down' : 'menu-up'">
-                  </b-icon>
+                  <v-fa :icon="props.open ? 'angle-down' : 'angle-up'">
+                  </v-fa>
                 </a>
               </div>
               <div class="card-content">
@@ -27,8 +27,14 @@
                 </div>
               </div>
               <footer class="card-footer">
-                <a class="card-footer-item">Edit</a>
-                <a class="card-footer-item">Delete</a>
+                <a class="card-footer-item">
+                  <v-fa icon="user-edit" />
+                  <span>Edit</span>
+                </a>
+                <a class="card-footer-item">
+                  <v-fa icon="user-times" />
+                  <span>delete</span>
+                </a>
               </footer>
             </b-collapse>
           </div>
@@ -37,11 +43,17 @@
     </section>
     <br>
     <section>
-      <b-button class="button" @click="isComponentModalActive = true">Regist</b-button>
+      <b-button class="button" @click="isComponentModalActive = true">
+        <v-fa icon="user-plus" />
+        <span>Regist</span>
+      </b-button>
       <b-modal :active.sync="isComponentModalActive" has-modal-card>
         <registration-form v-bind="newMember" v-on:registed="setNewMember"></registration-form>
       </b-modal>
-      <b-button class="button" @click="selectMember">Update</b-button>
+      <b-button class="button" @click="selectMember">
+        <v-fa icon="redo-alt" />
+        <span>Update</span>
+      </b-button>
     </section>
   </div>
 </template>
