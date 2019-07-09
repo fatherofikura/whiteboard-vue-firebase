@@ -137,6 +137,7 @@ export default {
       this.deleteMember.memberPosition = info.memberPosition;
       */
       // Call Functaion
+      console.log(info);
       var callfunction = firebase.functions().httpsCallable('deleteMember');
       var postdata = {
         uid : info.memberUID
