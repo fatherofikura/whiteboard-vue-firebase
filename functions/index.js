@@ -83,7 +83,7 @@ exports.deleteMember = functions.https.onCall( (data, context) => {
   }
 
   //
-  return admin.database().ref('/member/' + uid).removeValue().then(snapshot => {
+  return admin.database().ref('/member/' + uid).remove().then(snapshot => {
     console.log('value', snapshot.val());
     return snapshot.val();
   }).catch((error) => {
