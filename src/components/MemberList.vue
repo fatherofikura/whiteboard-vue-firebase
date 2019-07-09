@@ -31,10 +31,13 @@
                   <v-fa icon="user-edit" />
                   <span>Edit</span>
                 </a>
-                <a class="card-footer-item">
+                <a slot="trigger" class="card-footer-item" role="button" @click="clickDeleteButton(Member)">
                   <v-fa icon="user-times" />
                   <span>delete</span>
                 </a>
+                <b-modal :active.sync="isComponentModalActiveForConfirmation" has-modal-card>
+                  <confirmation-form v-bind="deleteMember" v-on:deleted="setDeleteMember"></confirmation-form>
+                </b-modal>
               </footer>
             </b-collapse>
           </div>
@@ -43,11 +46,11 @@
     </section>
     <br>
     <section>
-      <b-button class="button" @click="isComponentModalActive = true">
+      <b-button class="button" @click="isComponentModalActiveForRegistration = true">
         <v-fa icon="user-plus" />
         <span>Regist</span>
       </b-button>
-      <b-modal :active.sync="isComponentModalActive" has-modal-card>
+      <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
         <registration-form v-bind="newMember" v-on:registed="setNewMember"></registration-form>
       </b-modal>
       <b-button class="button" @click="selectMember">
@@ -64,35 +67,102 @@ import 'firebase/auth';
 import 'firebase/functions';
 import 'firebase/database';
 import RegistrationForm from "./RegistrationForm.vue";
+import ConfirmationForm from "./ConfirmationForm.vue";
 
 export default {
   components: {
-    RegistrationForm
+    RegistrationForm,
+    ConfirmationForm
   },
   name: "memberlist",
   data() {
     return {
-      isComponentModalActive: false,
+      isComponentModalActiveForRegistration: false,
+      isComponentModalActiveForConfirmation: false,
       newMember: {
         memberName: '',
         memberPhoneNumber: '',
         memberPosition: ''
       },
-      displayMember: {}
+      deleteMember: {
+        memberUID: '',
+        memberName: '',
+        memberPhoneNumber: '',
+        memberPosition: ''
+      },
+      displayMember: []
     };
   },
   created: function() {
     var _this = this;
     firebase.database().ref('/member').on('value', function(snapshot) {
-      _this.displayMember = snapshot.val(); // データに変化が起きたときに再取得する
+      const rootList = snapshot.val()
+      let list = []
+      Object.keys(rootList).forEach((val, key) => {
+        rootList[val].id = val
+        list.push(rootList[val])
+      })
+      _this.displayMember = list
     });
   },
   methods: {
     setNewMember : function(info) {
-      this.newMember.memberName = info.memberName;
-      this.newMember.memberPhoneNumber = info.memberPhoneNumber;
-      this.newMember.memberPosition = info.memberPosition;
-      this.isComponentModalActive = false;
+      // Call Functaion
+      var callfunction = firebase.functions().httpsCallable('insertMember');
+      var postdata = {
+        name : info.memberName,
+        phoneNumber : info.memberPhoneNumber,
+        position : info.memberPosition
+      };
+      var self = this;
+      callfunction(postdata).then(function(result) {
+        // Read result of the Cloud Function.
+        console.log(result);
+      }).catch(function(error) {
+        // Getting the Error details.
+        var code = error.code;
+        var message = error.message;
+        var details = error.details;
+        console.error('There was an error when calling the Cloud Function', error);
+        window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
+        + code + '\nError Message:' + message + '\nError Details:' + details);
+      });
+      this.isComponentModalActiveForRegistration = false;
+    },
+    setDeleteMember : function(info) {
+      /*
+      this.deleteMember.memberUID = info.memberUID;
+      this.deleteMember.memberName = info.memberName;
+      this.deleteMember.memberPhoneNumber = info.memberPhoneNumber;
+      this.deleteMember.memberPosition = info.memberPosition;
+      */
+      // Call Functaion
+      var callfunction = firebase.functions().httpsCallable('deleteMember');
+      var postdata = {
+        uid : info.memberUID
+      };
+      var self = this;
+      callfunction(postdata).then(function(result) {
+        // Read result of the Cloud Function.
+        console.log(result);
+      }).catch(function(error) {
+        // Getting the Error details.
+        var code = error.code;
+        var message = error.message;
+        var details = error.details;
+        console.error('There was an error when calling the Cloud Function', error);
+        window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
+        + code + '\nError Message:' + message + '\nError Details:' + details);
+      });
+      this.isComponentModalActiveForConfirmation = false;
+    },
+    clickDeleteButton : function(info, index) {
+      console.log(info);
+      this.deleteMember.memberUID = info.id;
+      this.deleteMember.memberName = info.name;
+      this.deleteMember.memberPhoneNumber = info.phoneNumber;
+      this.deleteMember.memberPosition = info.position;
+      this.isComponentModalActiveForConfirmation = true;
     },
     selectMember : function() {
       // Call Functaion
@@ -112,34 +182,6 @@ export default {
         window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
         + code + '\nError Message:' + message + '\nError Details:' + details);
       });
-    }
-  },
-  watch: {
-    newMember: {
-      handler: function (val, oldVal) {
-        // Call Functaion
-        var callfunction = firebase.functions().httpsCallable('insertMember');
-        var postdata = {
-          name : this.newMember.memberName,
-          phoneNumber : this.newMember.memberPhoneNumber,
-          position : this.newMember.memberPosition
-        };
-        var self = this;
-        callfunction(postdata).then(function(result) {
-          // Read result of the Cloud Function.
-          console.log(result);
-          self.displayMember = result.data;
-        }).catch(function(error) {
-          // Getting the Error details.
-          var code = error.code;
-          var message = error.message;
-          var details = error.details;
-          console.error('There was an error when calling the Cloud Function', error);
-          window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
-          + code + '\nError Message:' + message + '\nError Details:' + details);
-        });
-      },
-      deep: true
     }
   }
 };

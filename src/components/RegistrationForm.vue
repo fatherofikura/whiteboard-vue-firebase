@@ -16,8 +16,14 @@
         </b-field>
       </section>
       <footer class="modal-card-foot">
-        <b-button class="button" @click="$parent.close()">Close</b-button>
-        <b-button class="button" @click="registMemberChild">Registration</b-button>
+        <b-button class="button" @click="$parent.close()">
+          <v-fa icon="times" />
+          <span>Close</span>
+        </b-button>
+        <b-button class="button" type="is-info" @click="registMemberChild">
+          <v-fa icon="check" />
+          <span>Registration</span>
+        </b-button>
       </footer>
     </div>
   </form>

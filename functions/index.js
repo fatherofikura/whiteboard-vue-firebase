@@ -7,46 +7,6 @@ var sanitizer = require('sanitizer');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-// Saves a message to the Firebase Realtime Database but sanitizes the text by removing swearwords.
-exports.addMessage = functions.https.onCall( (data, context) => {
-  // Message text passed from the client.
-  const text = data.text;
-
-  // Checking attribute.
-  if (!(typeof text === 'string') || text.length === 0) {
-    // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
-      'one arguments "text" containing the message text to add.');
-  }
-
-  // Checking that the user is authenticated.
-  if (!context.auth) {
-    // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
-      'while authenticated.');
-  }
-
-  // Authentication / user information is automatically added to the request.
-  const uid = context.auth.uid;
-  const name = context.auth.token.name || null;
-  const picture = context.auth.token.picture || null;
-  const email = context.auth.token.email || null;
-
-  // Saving the new message to the Realtime Database.
-  const sanitizedMessage = sanitizer.sanitize(text); // Sanitize the message.
-  return admin.database().ref('/messages').push({
-    text: sanitizedMessage,
-    author: { uid, name, picture, email },
-  }).then(() => {
-    console.log('New Message written');
-    // Returning the sanitized message to the client.
-    return { text: sanitizedMessage };
-  }).catch((error) => {
-    // Re-throwing the error as an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('unknown', error.message, error);
-  });
-});
-
 // ------------------------------------------
 // メンバー情報追加用
 // ------------------------------------------
@@ -99,12 +59,6 @@ exports.selectMember = functions.https.onCall( (data, context) => {
       'while authenticated.');
   }
 
-  // Get a Member.
-  /*
-  return admin.database().ref('/member').once('value', (snapshot) => {
-    console.log('value', snapshot.val())
-  })
-  */
   return admin.database().ref('/member').once(`value`).then(snapshot => {
     console.log('value', snapshot.val());
     return snapshot.val();
@@ -113,3 +67,28 @@ exports.selectMember = functions.https.onCall( (data, context) => {
     throw new functions.https.HttpsError('unknown', error.message, error);
   });
 });
+
+// ------------------------------------------
+// メンバー情報削除用
+// ------------------------------------------
+exports.deleteMember = functions.https.onCall( (data, context) => {
+
+  const uid = data.uid;
+
+  // Checking that the user is authenticated.
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+      'while authenticated.');
+  }
+
+  //
+  return admin.database().ref('/member').child(uid).remoeve.then(snapshot => {
+    console.log('value', snapshot.val());
+    return snapshot.val();
+  }).catch((error) => {
+    // Re-throwing the error as an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('unknown', error.message, error);
+  });
+});
+
