@@ -40,11 +40,12 @@ exports.insertMember = functions.https.onCall( (data, context) => {
   // Write the new post's data simultaneously in the posts list and the user's post list.
   var updates = {};
   updates['/member/' + newPostKey] = postData;
-  return admin.database().ref().update(updates).then( result => {
-    return admin.database().ref('/member').once(`value`)
-  }).then(snapshot => {
+  return admin.database().ref().update(updates).then(snapshot => {
     console.log('value', snapshot.val());
     return snapshot.val();
+  }).catch((error) => {
+    // Re-throwing the error as an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('unknown', error.message, error);
   });
 });
 
