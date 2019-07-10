@@ -49,8 +49,11 @@ export default {
         memberPhoneNumber : this.phoneNumber,
         memberPosition : this.position,
       };
-      console.log(memberInfo);
-      this.$emit('registed', memberInfo );
+      if (this.uid == '') {
+        this.$emit('registed', memberInfo );
+      } else {
+        this.$emit('edited', memberInfo );
+      }
     }
   }
 };

@@ -56,10 +56,6 @@
       <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
         <registration-form v-bind="editMember" v-on:registed="setRegistMember"></registration-form>
       </b-modal>
-      <b-button class="button" @click="selectMember">
-        <v-fa icon="redo-alt" />
-        <span>Update</span>
-      </b-button>
     </section>
   </div>
 </template>
@@ -119,7 +115,6 @@ export default {
         phoneNumber : info.memberPhoneNumber,
         position : info.memberPosition
       };
-      var self = this;
       callfunction(postdata).then(function(result) {
         // Read result of the Cloud Function.
         console.log(result);
@@ -136,7 +131,27 @@ export default {
     },
     setEditMember : function(info) {
       // Call Functaion
-      this.isComponentModalActiveForRegistration = false;
+      console.log(info);
+      var callfunction = firebase.functions().httpsCallable('updateMember');
+      var postdata = {
+        uid : info.memberUID,
+        name : info.memberName,
+        phoneNumber : info.memberPhoneNumber,
+        position : info.memberPosition
+      };
+      callfunction(postdata).then(function(result) {
+        // Read result of the Cloud Function.
+        console.log(result);
+      }).catch(function(error) {
+        // Getting the Error details.
+        var code = error.code;
+        var message = error.message;
+        var details = error.details;
+        console.error('There was an error when calling the Cloud Function', error);
+        window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
+        + code + '\nError Message:' + message + '\nError Details:' + details);
+      });
+      this.isComponentModalActiveForEdit = false;
     },
     setDeleteMember : function(info) {
       // Call Functaion
@@ -145,7 +160,6 @@ export default {
       var postdata = {
         uid : info.memberUID
       };
-      var self = this;
       callfunction(postdata).then(function(result) {
         // Read result of the Cloud Function.
         console.log(result);
@@ -167,13 +181,6 @@ export default {
       this.editMember.memberPosition = "";
       this.isComponentModalActiveForRegistration = true;
     },
-    clickDeleteButton : function(info, index) {
-      this.deleteMember.memberUID = info.id;
-      this.deleteMember.memberName = info.name;
-      this.deleteMember.memberPhoneNumber = info.phoneNumber;
-      this.deleteMember.memberPosition = info.position;
-      this.isComponentModalActiveForConfirmation = true;
-    },
     clickEditButton : function(info, index) {
       console.log(info);
       this.editMember.memberUID = info.id;
@@ -182,24 +189,12 @@ export default {
       this.editMember.memberPosition = info.position;
       this.isComponentModalActiveForEdit = true;
     },
-    selectMember : function() {
-      // Call Functaion
-      var callfunction = firebase.functions().httpsCallable('selectMember');
-      var postdata = {};
-      var self = this;
-      callfunction(postdata).then(function(result) {
-        // Read result of the Cloud Function.
-        self.displayMember = result.data;
-        console.log(self.displayMember);
-      }).catch(function(error) {
-        // Getting the Error details.
-        var code = error.code;
-        var message = error.message;
-        var details = error.details;
-        console.error('There was an error when calling the Cloud Function', error);
-        window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
-        + code + '\nError Message:' + message + '\nError Details:' + details);
-      });
+    clickDeleteButton : function(info, index) {
+      this.deleteMember.memberUID = info.id;
+      this.deleteMember.memberName = info.name;
+      this.deleteMember.memberPhoneNumber = info.phoneNumber;
+      this.deleteMember.memberPosition = info.position;
+      this.isComponentModalActiveForConfirmation = true;
     }
   }
 };

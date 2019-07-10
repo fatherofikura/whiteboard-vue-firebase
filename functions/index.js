@@ -49,9 +49,29 @@ exports.insertMember = functions.https.onCall( (data, context) => {
 });
 
 // ------------------------------------------
-// メンバー情報参照用
+// メンバー情報更新用
 // ------------------------------------------
-exports.selectMember = functions.https.onCall( (data, context) => {
+exports.updateMember = functions.https.onCall( (data, context) => {
+
+  const uid = data.uid;
+  const name = data.name;
+  const phoneNumber = data.phoneNumber;
+  const position = data.position;
+
+  // Checking attribute.
+  if (!(typeof uid === 'string') || uid.length === 0) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+      'one arguments "uid" containing the uid to add.');
+  }
+
+    // Checking attribute.
+    if (!(typeof name === 'string') || name.length === 0) {
+      // Throwing an HttpsError so that the client gets the error details.
+      throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+        'one arguments "name" containing the name to add.');
+    }
+
   // Checking that the user is authenticated.
   if (!context.auth) {
     // Throwing an HttpsError so that the client gets the error details.
@@ -59,7 +79,17 @@ exports.selectMember = functions.https.onCall( (data, context) => {
       'while authenticated.');
   }
 
-  return admin.database().ref('/member').once(`value`).then(snapshot => {
+  // A post entry.
+  var postData = {
+    name: name,
+    phoneNumber: phoneNumber,
+    position: position
+  };
+
+  // update
+  var updates = {};
+  updates['/member/' + uid] = postData;
+  return admin.database().ref().update(updates).then(snapshot => {
     return "";
   }).catch((error) => {
     // Re-throwing the error as an HttpsError so that the client gets the error details.
@@ -74,6 +104,13 @@ exports.deleteMember = functions.https.onCall( (data, context) => {
 
   const uid = data.uid;
 
+  // Checking attribute.
+  if (!(typeof uid === 'string') || uid.length === 0) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+      'one arguments "uid" containing the uid to add.');
+  }
+
   // Checking that the user is authenticated.
   if (!context.auth) {
     // Throwing an HttpsError so that the client gets the error details.
@@ -81,7 +118,7 @@ exports.deleteMember = functions.https.onCall( (data, context) => {
       'while authenticated.');
   }
 
-  //
+  // delete
   return admin.database().ref('/member/' + uid).remove().then(snapshot => {
     return "";
   }).catch((error) => {
