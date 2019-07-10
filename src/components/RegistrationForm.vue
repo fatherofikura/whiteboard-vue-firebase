@@ -2,7 +2,8 @@
   <form action="">
     <div class="modal-card" style="width: auto">
       <header class="modal-card-head">
-        <p class="modal-card-title">Member Registration</p>
+        <p v-if="uid == '' "  class="modal-card-title">Member Registration</p>
+        <p v-else class="modal-card-title">Member Edit</p>
       </header>
       <section class="modal-card-body">
         <b-field label="Name">
@@ -31,9 +32,10 @@
 
 <script>
 export default {
-  props: ['memberName', 'memberPhoneNumber', 'memberPosition'],
+  props: ['memberUID', 'memberName', 'memberPhoneNumber', 'memberPosition'],
   data() {
     return {
+      uid: this.memberUID,
       name: this.memberName,
       phoneNumber: this.memberPhoneNumber,
       position: this.memberPosition
@@ -42,6 +44,7 @@ export default {
   methods: {
     registMemberChild : function() {
       var memberInfo = {
+        memberUID : this.uid,
         memberName : this.name,
         memberPhoneNumber : this.phoneNumber,
         memberPosition : this.position,

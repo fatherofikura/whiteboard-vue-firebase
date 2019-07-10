@@ -27,10 +27,13 @@
                 </div>
               </div>
               <footer class="card-footer">
-                <a class="card-footer-item">
+                <a slot="trigger" class="card-footer-item" role="button" @click="clickEditButton(Member)">
                   <v-fa icon="user-edit" />
                   <span>Edit</span>
                 </a>
+                <b-modal :active.sync="isComponentModalActiveForEdit" has-modal-card>
+                  <registration-form v-bind="editMember" v-on:edited="setEditMember"></registration-form>
+                </b-modal>
                 <a slot="trigger" class="card-footer-item" role="button" @click="clickDeleteButton(Member)">
                   <v-fa icon="user-times" />
                   <span>delete</span>
@@ -46,12 +49,12 @@
     </section>
     <br>
     <section>
-      <b-button class="button" @click="isComponentModalActiveForRegistration = true">
+      <b-button class="button" @click="clickRegistButton()">
         <v-fa icon="user-plus" />
         <span>Regist</span>
       </b-button>
       <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
-        <registration-form v-bind="newMember" v-on:registed="setNewMember"></registration-form>
+        <registration-form v-bind="editMember" v-on:registed="setRegistMember"></registration-form>
       </b-modal>
       <b-button class="button" @click="selectMember">
         <v-fa icon="redo-alt" />
@@ -79,7 +82,9 @@ export default {
     return {
       isComponentModalActiveForRegistration: false,
       isComponentModalActiveForConfirmation: false,
-      newMember: {
+      isComponentModalActiveForEdit: false,
+      editMember: {
+        memberUID: '',
         memberName: '',
         memberPhoneNumber: '',
         memberPosition: ''
@@ -106,7 +111,7 @@ export default {
     });
   },
   methods: {
-    setNewMember : function(info) {
+    setRegistMember : function(info) {
       // Call Functaion
       var callfunction = firebase.functions().httpsCallable('insertMember');
       var postdata = {
@@ -129,13 +134,11 @@ export default {
       });
       this.isComponentModalActiveForRegistration = false;
     },
+    setEditMember : function(info) {
+      // Call Functaion
+      this.isComponentModalActiveForRegistration = false;
+    },
     setDeleteMember : function(info) {
-      /*
-      this.deleteMember.memberUID = info.memberUID;
-      this.deleteMember.memberName = info.memberName;
-      this.deleteMember.memberPhoneNumber = info.memberPhoneNumber;
-      this.deleteMember.memberPosition = info.memberPosition;
-      */
       // Call Functaion
       console.log(info);
       var callfunction = firebase.functions().httpsCallable('deleteMember');
@@ -157,13 +160,27 @@ export default {
       });
       this.isComponentModalActiveForConfirmation = false;
     },
+    clickRegistButton : function() {
+      this.editMember.memberUID = "";
+      this.editMember.memberName = "";
+      this.editMember.memberPhoneNumber = "";
+      this.editMember.memberPosition = "";
+      this.isComponentModalActiveForRegistration = true;
+    },
     clickDeleteButton : function(info, index) {
-      console.log(info);
       this.deleteMember.memberUID = info.id;
       this.deleteMember.memberName = info.name;
       this.deleteMember.memberPhoneNumber = info.phoneNumber;
       this.deleteMember.memberPosition = info.position;
       this.isComponentModalActiveForConfirmation = true;
+    },
+    clickEditButton : function(info, index) {
+      console.log(info);
+      this.editMember.memberUID = info.id;
+      this.editMember.memberName = info.name;
+      this.editMember.memberPhoneNumber = info.phoneNumber;
+      this.editMember.memberPosition = info.position;
+      this.isComponentModalActiveForEdit = true;
     },
     selectMember : function() {
       // Call Functaion

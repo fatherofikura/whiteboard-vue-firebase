@@ -5,7 +5,7 @@
         <p class="modal-card-title">Confirmation Required</p>
       </header>
       <section class="modal-card-body">
-        Are you sure to this entry?
+        Are you sure to delete this entry?
         <hr>
         <b-taglist attached>
           <b-tag type="is-dark">Name</b-tag>
