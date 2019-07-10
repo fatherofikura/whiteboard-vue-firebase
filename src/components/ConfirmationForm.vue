@@ -7,18 +7,23 @@
       <section class="modal-card-body">
         Are you sure to delete this entry?
         <hr>
-        <b-taglist attached>
-          <b-tag type="is-dark">Name</b-tag>
-          <b-tag type>{{ memberName }}</b-tag>
-        </b-taglist>
-        <b-taglist attached>
-          <b-tag type="is-dark">Position</b-tag>
-          <b-tag type>{{ memberPosition }}</b-tag>
-        </b-taglist>
-        <b-taglist attached>
-          <b-tag type="is-dark">Phone Number</b-tag>
-          <b-tag type>{{ memberPhoneNumber }}</b-tag>
-        </b-taglist>
+        <b-collapse class="card">
+          <div class="card-header">
+            <p class="card-header-title">{{ name }}</p>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <b-taglist attached>
+                <b-tag type="is-dark">Position</b-tag>
+                <b-tag type>{{ position }}</b-tag>
+              </b-taglist>
+              <b-taglist attached>
+                <b-tag type="is-dark">Phone Number</b-tag>
+                <b-tag type>{{ phoneNumber }}</b-tag>
+              </b-taglist>
+            </div>
+          </div>
+        </b-collapse>
       </section>
       <footer class="modal-card-foot">
         <b-button class="button" @click="$parent.close()">
