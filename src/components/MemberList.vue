@@ -1,7 +1,7 @@
 <template>
   <div class="memberlist">
     <section>
-      <div class="columns is-multiline">
+      <draggable class="columns is-multiline">
         <div v-for="(Member, index) in displayMember" v-bind:key="index">
           <div class="column">
             <b-collapse class="card">
@@ -45,7 +45,7 @@
             </b-collapse>
           </div>
         </div>
-      </div>
+      </draggable>
     </section>
     <br>
     <section>
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/functions';
@@ -71,7 +72,8 @@ import ConfirmationForm from "./ConfirmationForm.vue";
 export default {
   components: {
     RegistrationForm,
-    ConfirmationForm
+    ConfirmationForm,
+    draggable,
   },
   name: "memberlist",
   data() {

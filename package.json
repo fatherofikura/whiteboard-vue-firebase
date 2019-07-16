@@ -19,7 +19,8 @@
     "firebase": "^6.2.0",
     "firebase-admin": "^8.1.0",
     "vue": "^2.6.10",
-    "vue-spinner": "^1.0.3"
+    "vue-spinner": "^1.0.3",
+    "vuedraggable": "^2.23.0"
   },
   "browserslist": [
     "> 1%",
