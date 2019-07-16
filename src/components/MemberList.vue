@@ -5,16 +5,12 @@
         <div v-for="(Member, index) in displayMember" v-bind:key="index">
           <div class="column">
             <b-collapse class="card">
-              <div slot="trigger" slot-scope="props" class="card-header" role="button">
+              <div class="card-header" role="button" @click="clickCard(Member)">
                 <p class="card-header-title">
                   {{ Member.name }}
                 </p>
-                <a class="card-header-icon">
-                  <v-fa :icon="props.open ? 'angle-down' : 'angle-up'">
-                  </v-fa>
-                </a>
               </div>
-              <div class="card-content">
+              <div class="card-content" @click="clickCard(Member)">
                 <div class="content">
                   <b-taglist attached>
                     <b-tag type="is-dark">Position</b-tag>
@@ -176,6 +172,9 @@ export default {
       });
       this.isComponentModalActiveForConfirmation = false;
     },
+    clickCard : function(info, index) {
+      console.log(info);
+    },
     clickRegistButton : function() {
       this.editMember.memberUID = "";
       this.editMember.memberName = "";
@@ -184,7 +183,6 @@ export default {
       this.isComponentModalActiveForRegistration = true;
     },
     clickEditButton : function(info, index) {
-      console.log(info);
       this.editMember.memberUID = info.id;
       this.editMember.memberName = info.name;
       this.editMember.memberPhoneNumber = info.phoneNumber;
