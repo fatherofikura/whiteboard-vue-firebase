@@ -7,53 +7,13 @@
         <span aria-hidden="true"></span>
       </a>
       <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
-        <div class="navbar-item ">
-          <a class="button is-light">
-            <v-fa icon="door-closed" />
-            <span>未出社</span>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="button is-light">
-            <v-fa icon="chair" />
-            <span>在席</span>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="button is-light">
-            <v-fa icon="home" />
-            <span>帰宅</span>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="button is-light">
-            <v-fa icon="suitcase-rolling" />
-            <span>出張</span>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="button is-light">
-            <v-fa icon="door-open" />
-            <span>外出</span>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="button is-light">
-            <v-fa icon="clipboard" />
-            <span>社内</span>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="button is-light">
-            <v-fa icon="bed" />
-            <span>休み</span>
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="button is-light">
-            <v-fa icon="ellipsis-h" />
-            <span>その他</span>
-          </a>
+        <div v-for="(Status, index) in displayStatus" v-bind:key="index">
+          <div class="navbar-item ">
+            <a class="button is-light">
+              <v-fa v-bind:icon="Status.icon" />
+              <span>{{ Status.name }}</span>
+            </a>
+          </div>
         </div>
       </div>
     </nav>
@@ -67,6 +27,14 @@ export default {
     return {
       isOpen: false
     }
-  }
+  },
+  created: function() {
+    this.$store.dispatch("status/selectStatus");
+  },
+  computed: {
+    displayStatus() {
+      return this.$store.getters['status/currentStatus'];
+    },
+  },
 };
 </script>
