@@ -4,7 +4,7 @@
       <draggable class="columns is-multiline">
         <div v-for="(Member, index) in displayMember" v-bind:key="index">
           <div class="column">
-            <b-collapse class="card">
+            <b-collapse class="card" v-bind:class="selectedCardClass(Member)">
               <div class="card-header" role="button" @click="clickCard(Member)">
                 <p class="card-header-title">
                   {{ Member.name }}
@@ -84,7 +84,7 @@ export default {
         memberName: '',
         memberPhoneNumber: '',
         memberPosition: ''
-      },
+      }
     };
   },
   created: function() {
@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     setRegistMember : function(info) {
-      // Call Functaion
       var member = {
         memberName : info.memberName,
         memberPhoneNumber : info.memberPhoneNumber,
@@ -102,7 +101,6 @@ export default {
       this.isComponentModalActiveForRegistration = false;
     },
     setEditMember : function(info) {
-      // Call Functaion
       var member = {
         memberUID : info.memberUID,
         memberName : info.memberName,
@@ -113,7 +111,6 @@ export default {
       this.isComponentModalActiveForEdit = false;
     },
     setDeleteMember : function(info) {
-      // Call Functaion
       var member = {
         memberUID : info.memberUID
       }
@@ -121,7 +118,7 @@ export default {
       this.isComponentModalActiveForConfirmation = false;
     },
     clickCard : function(info, index) {
-      // console.log(info);
+      this.$store.dispatch("member/checkSelectedMember", info.id);
     },
     clickRegistButton : function() {
       this.editMember.memberUID = "";
@@ -149,7 +146,28 @@ export default {
     displayMember() {
       return this.$store.getters['member/currentMember'];
     },
+    selectedCardClass() {
+      self = this;
+        return function (key) {
+          var arrayIndex = this.clickedCardList.indexOf(key.id);
+          if(arrayIndex >= 0){
+            return { selectedCard: true }
+          }
+          else{
+            return { selectedCard: false }
+          }
+        };
+    },
+    clickedCardList() {
+      return this.$store.getters['member/currentSelectedMember'];
+    }
   },
 };
 </script>
 
+<style>
+.selectedCard {
+  box-shadow : 3px 3px 6px -2px,
+  3px 3px 8px rgba(255,255,255,0.8) inset;
+}
+</style>

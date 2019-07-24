@@ -6,7 +6,8 @@ import 'firebase/database';
 const namespaced = true;
 
 const state = {
-  member: {}
+  member: {},
+  selectedMember: []
 };
 
 const mutations = {
@@ -27,7 +28,19 @@ const mutations = {
   },
   'DELETE_MEMBER'(state, info) {
     console.log(info);
-  }
+  },
+  'CHECK_SELECTED_MEMBER'(state, info) {
+    var arrayIndex = state.selectedMember.indexOf(info);
+    if(arrayIndex >= 0){
+      state.selectedMember.splice(arrayIndex,1);
+    }
+    else{
+      state.selectedMember.push(info);
+    }
+  },
+  'CHANGE_STATUS'(state, info) {
+    console.log(info);
+  },
 };
 
 const actions = {
@@ -94,13 +107,22 @@ const actions = {
       window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
       + code + '\nError Message:' + message + '\nError Details:' + details);
     });
+  },
+  checkSelectedMember({ commit }, info) {
+    commit('CHECK_SELECTED_MEMBER', info);
+  },
+  changeStatus({ commit }, info) {
+    commit('CHANGE_STATUS', info);
   }
 };
 
 const getters = {
   currentMember: state => {
     return state.member;
-  }
+  },
+  currentSelectedMember: state => {
+    return state.selectedMember;
+  },
 }
 
 export default {

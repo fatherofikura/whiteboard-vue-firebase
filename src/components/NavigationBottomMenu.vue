@@ -1,5 +1,5 @@
 <template>
-  <div class="navigationTopMenu">
+  <div class="navigationBottomMenu">
     <nav class="navbar is-fixed-bottom is-dark" role="navigation" aria-label="main navigation">
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" @click="isOpen = !isOpen" v-bind:class="{'is-active': isOpen}">
         <span aria-hidden="true"></span>
@@ -8,7 +8,7 @@
       </a>
       <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
         <div v-for="(Status, index) in displayStatus" v-bind:key="index">
-          <div class="navbar-item ">
+          <div class="navbar-item"  @click="clickStatusButton(Status)">
             <a class="button is-light">
               <v-fa v-bind:icon="Status.icon" />
               <span>{{ Status.name }}</span>
@@ -36,5 +36,11 @@ export default {
       return this.$store.getters['status/currentStatus'];
     },
   },
+  methods: {
+    clickStatusButton : function(info, index) {
+      console.log(info.id);
+      this.$store.dispatch("member/changeStatus", { statusID : info.id, selectedMember : this.$store.getters['member/currentSelectedMember'] });
+    }
+  }
 };
 </script>
