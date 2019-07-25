@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     clickStatusButton : function(info, index) {
-      console.log(info.id);
       this.$store.dispatch("member/changeStatus", { statusID : info.id, selectedMember : this.$store.getters['member/currentSelectedMember'] });
     }
   }

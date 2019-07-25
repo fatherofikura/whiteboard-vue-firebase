@@ -117,6 +117,10 @@ const actions = {
       statusID : info.statusID,
       selectedMember : info.selectedMember
     };
+
+    console.log(postdata);
+    console.log(postdata.selectedMember);
+
     callfunction(postdata).then(function(result) {
       // Read result of the Cloud Function.
       commit('CHANGE_STATUS', postdata);
