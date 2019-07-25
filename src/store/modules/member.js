@@ -112,7 +112,23 @@ const actions = {
     commit('CHECK_SELECTED_MEMBER', info);
   },
   changeStatus({ commit }, info) {
-    commit('CHANGE_STATUS', info);
+    var callfunction = firebase.functions().httpsCallable('updateStatus');
+    var postdata = {
+      statusID : info.statusID,
+      selectedMember : info.selectedMember
+    };
+    callfunction(postdata).then(function(result) {
+      // Read result of the Cloud Function.
+      commit('CHANGE_STATUS', postdata);
+    }).catch(function(error) {
+      // Getting the Error details.
+      var code = error.code;
+      var message = error.message;
+      var details = error.details;
+      console.error('There was an error when calling the Cloud Function', error);
+      window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
+      + code + '\nError Message:' + message + '\nError Details:' + details);
+    });
   }
 };
 

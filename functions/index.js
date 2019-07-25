@@ -127,3 +127,54 @@ exports.deleteMember = functions.https.onCall( (data, context) => {
   });
 });
 
+// ------------------------------------------
+// ステータス更新用
+// ------------------------------------------
+exports.updateStatus = functions.https.onCall( (data, context) => {
+
+  const uidList = data.selectedMember;
+  const statusID = data.statusID;
+
+  // Checking attribute.
+  if (!(typeof uidList.length >= 0)){
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+      'one arguments "uidList" containing the uidList to add.');
+  }
+
+    // Checking attribute.
+    if (!(typeof statusID === 'string') || statusID.length === 0) {
+      // Throwing an HttpsError so that the client gets the error details.
+      throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+        'one arguments "statusID" containing the statusID to add.');
+    }
+
+  // Checking that the user is authenticated.
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+      'while authenticated.');
+  }
+
+
+  // A post entry.
+  var postMemberData = {
+    [statusID] : true
+  };
+  var postStatusData = {};
+  var updates = {};
+  for( var uid in uidList ) {
+    updates['/member/' + uid + '/status'] = postMemberData;
+    postStatusData[uid] = true;
+  }
+  updates['/status/' + statusID + '/member'] = postStatusData;
+
+  console.log(updates);
+
+  return admin.database().ref().update(updates).then(snapshot => {
+    return "";
+  }).catch((error) => {
+    // Re-throwing the error as an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('unknown', error.message, error);
+  });
+});
