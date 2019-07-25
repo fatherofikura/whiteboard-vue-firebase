@@ -163,9 +163,9 @@ exports.updateStatus = functions.https.onCall( (data, context) => {
   };
   var postStatusData = {};
   var updates = {};
-  for( var uid in uidList ) {
-    updates['/member/' + uid + '/status'] = postMemberData;
-    postStatusData[uid] = true;
+  for( var i=0; i<uidList.length; i++ ) {
+    updates['/member/' + uidList[i] + '/status'] = postMemberData;
+    postStatusData[uidList[i]] = true;
   }
   updates['/status/' + statusID + '/member'] = postStatusData;
 
