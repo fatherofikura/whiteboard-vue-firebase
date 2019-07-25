@@ -118,8 +118,8 @@ const actions = {
       selectedMember : info.selectedMember
     };
 
-    console.log(postdata);
     console.log(postdata.selectedMember);
+    console.log(postdata.selectedMember.length);
 
     callfunction(postdata).then(function(result) {
       // Read result of the Cloud Function.

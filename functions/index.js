@@ -136,7 +136,7 @@ exports.updateStatus = functions.https.onCall( (data, context) => {
   const statusID = data.statusID;
 
   // Checking attribute.
-  if (!(typeof uidList.length >= 0)){
+  if (!(uidList.length >= 0)){
     // Throwing an HttpsError so that the client gets the error details.
     throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
       'one arguments "uidList" containing the uidList to add.');
