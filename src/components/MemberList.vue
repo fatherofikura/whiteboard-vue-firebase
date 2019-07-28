@@ -7,7 +7,8 @@
             <b-collapse class="card" v-bind:class="selectedCardClass(Member)">
               <div class="card-header" role="button" @click="clickCard(Member)">
                 <p class="card-header-title">
-                  {{ Member.name }}
+                  <v-fa v-bind:icon="setStatusIcon(Member)" />
+                  <span>{{ Member.name }}</span>
                 </p>
               </div>
               <div class="card-content" @click="clickCard(Member)">
@@ -160,6 +161,20 @@ export default {
     },
     clickedCardList() {
       return this.$store.getters['member/currentSelectedMember'];
+    },
+    setStatusIcon() {
+      self = this;
+      return function (key) {
+        var statusList = this.$store.getters['status/currentStatus'];
+        // データが読み込めない場合、読み込み中のアイコンを表示
+        if( Object.keys(statusList).length === 0 ){
+          return "spinner"
+        }
+        if( !key.status ){
+          return statusList[0].icon;
+        }
+        return statusList[Object.keys(key.status)].icon;
+      };
     }
   },
 };

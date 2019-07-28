@@ -40,6 +40,7 @@ const mutations = {
   },
   'CHANGE_STATUS'(state, info) {
     console.log(info);
+    state.selectedMember.length = 0;
   },
 };
 
@@ -117,10 +118,6 @@ const actions = {
       statusID : info.statusID,
       selectedMember : info.selectedMember
     };
-
-    console.log(postdata.selectedMember);
-    console.log(postdata.selectedMember.length);
-
     callfunction(postdata).then(function(result) {
       // Read result of the Cloud Function.
       commit('CHANGE_STATUS', postdata);
