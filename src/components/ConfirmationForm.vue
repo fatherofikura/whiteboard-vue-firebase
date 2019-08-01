@@ -7,20 +7,29 @@
       <section class="modal-card-body">
         Are you sure to delete this entry?
         <hr>
-        <b-collapse class="card">
+        <b-collapse class="card card-base">
           <div class="card-header">
-            <p class="card-header-title">{{ name }}</p>
+            <p class="card-header-title card-header-title-base">
+              <span>{{ name }}</span>
+            </p>
           </div>
-          <div class="card-content">
+          <div class="card-content card-content-base">
             <div class="content">
-              <b-taglist attached>
-                <b-tag type="is-dark">Position</b-tag>
-                <b-tag type>{{ position }}</b-tag>
-              </b-taglist>
-              <b-taglist attached>
-                <b-tag type="is-dark">Phone Number</b-tag>
-                <b-tag type>{{ phoneNumber }}</b-tag>
-              </b-taglist>
+              <div class="tag_base">
+                <b-tooltip class="tag_hint" label="Position" type="is-dark" position="is-right">
+                  <div class="tag_key">
+                    <v-fa icon="id-badge" />
+                  </div>
+                </b-tooltip>
+                <div class="tag_value">{{ position }}</div>
+                <br>
+                <b-tooltip class="tag_hint" label="PhoneNumber" type="is-dark" position="is-right">
+                  <div class="tag_key">
+                    <v-fa icon="phone-square" />
+                  </div>
+                </b-tooltip>
+                <div class="tag_value">{{ phoneNumber }}</div>
+              </div>
             </div>
           </div>
         </b-collapse>
@@ -28,11 +37,11 @@
       <footer class="modal-card-foot">
         <b-button class="button" @click="$parent.close()">
           <v-fa icon="times" />
-          <span>Close</span>
+          <span>Cancel</span>
         </b-button>
         <b-button class="button" type="is-info" @click="deleteMemberChild">
           <v-fa icon="check" />
-          <span>Yes</span>
+          <span>Delete</span>
         </b-button>
       </footer>
     </div>
