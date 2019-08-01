@@ -1,7 +1,7 @@
 <template>
   <div class="memberlist">
     <section>
-      <div class="columns is-multiline">
+      <draggable class="columns is-multiline">
         <div v-for="(Member, index) in displayMember" v-bind:key="index">
           <div class="column">
             <b-collapse class="card card-base" v-bind:class="selectedCardClass(Member)">
@@ -57,7 +57,7 @@
         <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
           <registration-form v-bind="editMember" v-on:registed="setRegistMember"></registration-form>
         </b-modal>
-      </div>
+      </draggable>
     </section>
     <br>
     <br>
