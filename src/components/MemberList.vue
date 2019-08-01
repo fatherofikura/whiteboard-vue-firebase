@@ -264,29 +264,6 @@ export default {
   text-align: right;
   margin: 0px 4px 0px 0px;
 }
-/*
-.card_footer_btn {
-  display: inline-block;
-  text-decoration: none;
-  color: rgba(152, 152, 152, 0.43);
-  width: 24px;
-  font-size: 14px;
-  text-align: center;
-  overflow: hidden;
-  font-weight: bold;
-  background-image: linear-gradient(#e8e8e8 0%, #d6d6d6 100%);
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
-  border-bottom: solid 2px #b5b5b5;
-  border-radius: 3px;
-  margin: 0px 4px 8px 0px;
-  padding: 1px 4px;
-}
-.card_footer_btn:active {
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
-  border-bottom: none;
-}
-*/
 .card_footer_btn {
   display: inline-block;
   width: 24px;
