@@ -1,59 +1,67 @@
 <template>
   <div class="memberlist">
     <section>
-      <draggable class="columns is-multiline">
+      <div class="columns is-multiline">
         <div v-for="(Member, index) in displayMember" v-bind:key="index">
           <div class="column">
-            <b-collapse class="card" v-bind:class="selectedCardClass(Member)">
+            <b-collapse class="card card-base" v-bind:class="selectedCardClass(Member)">
               <div class="card-header" role="button" @click="clickCard(Member)">
-                <p class="card-header-title">
-                  <v-fa v-bind:icon="setStatusIcon(Member)" />
+                <p class="card-header-title card-header-title-base" v-bind:style="setStatusIconStyle(Member)">
+                  <v-fa class="icon-base" v-bind:icon="setStatusIcon(Member)" />
                   <span>{{ Member.name }}</span>
                 </p>
               </div>
-              <div class="card-content" @click="clickCard(Member)">
+              <div class="card-content card-content-base" @click="clickCard(Member)">
                 <div class="content">
-                  <b-taglist attached>
-                    <b-tag type="is-dark">Position</b-tag>
-                    <b-tag type>{{ Member.position }}</b-tag>
-                  </b-taglist>
-                  <b-taglist attached>
-                    <b-tag type="is-dark">Phone Number</b-tag>
-                    <b-tag type>{{ Member.phoneNumber }}</b-tag>
-                  </b-taglist>
+                  <div class="tag_base">
+                    <b-tooltip class="tag_hint" label="Position" type="is-dark" position="is-right">
+                      <div class="tag_key">
+                        <v-fa icon="id-badge" />
+                      </div>
+                    </b-tooltip>
+                    <div class="tag_value">{{ Member.position }}</div>
+                    <br>
+                    <b-tooltip class="tag_hint" label="PhoneNumber" type="is-dark" position="is-right">
+                      <div class="tag_key">
+                        <v-fa icon="phone-square" />
+                      </div>
+                    </b-tooltip>
+                    <div class="tag_value">{{ Member.phoneNumber }}</div>
+                  </div>
                 </div>
               </div>
-              <footer class="card-footer">
-                <a slot="trigger" class="card-footer-item" role="button" @click="clickEditButton(Member)">
-                  <v-fa icon="user-edit" />
-                  <span>Edit</span>
-                </a>
-                <b-modal :active.sync="isComponentModalActiveForEdit" has-modal-card>
-                  <registration-form v-bind="editMember" v-on:edited="setEditMember"></registration-form>
-                </b-modal>
-                <a slot="trigger" class="card-footer-item" role="button" @click="clickDeleteButton(Member)">
-                  <v-fa icon="user-times" />
-                  <span>delete</span>
-                </a>
-                <b-modal :active.sync="isComponentModalActiveForConfirmation" has-modal-card>
-                  <confirmation-form v-bind="deleteMember" v-on:deleted="setDeleteMember"></confirmation-form>
-                </b-modal>
-              </footer>
+              <div class="card_footer_btn_wrapper">
+                <b-tooltip label="Edit" type="is-dark" position="is-bottom">
+                  <div class="card_footer_btn" @click="clickEditButton(Member)">
+                    <v-fa class="card_footer_btn_icon" icon="pen" />
+                  </div>
+                </b-tooltip>
+                <b-tooltip label="delete" type="is-dark" position="is-bottom">
+                  <div class="card_footer_btn" @click="clickDeleteButton(Member)">
+                    <v-fa class="card_footer_btn_icon" icon="trash" />
+                  </div>
+                </b-tooltip>
+              </div>
+              <b-modal :active.sync="isComponentModalActiveForEdit" has-modal-card>
+                <registration-form v-bind="editMember" v-on:deleted="setEditMember"></registration-form>
+              </b-modal>
+              <b-modal :active.sync="isComponentModalActiveForConfirmation" has-modal-card>
+                <confirmation-form v-bind="deleteMember" v-on:deleted="setDeleteMember"></confirmation-form>
+              </b-modal>
             </b-collapse>
           </div>
         </div>
-      </draggable>
+        <div class="regist_button" @click="clickRegistButton()">
+          <v-fa icon="user-plus" />
+        </div>
+        <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
+          <registration-form v-bind="editMember" v-on:registed="setRegistMember"></registration-form>
+        </b-modal>
+      </div>
     </section>
     <br>
-    <section>
-      <b-button class="button" @click="clickRegistButton()">
-        <v-fa icon="user-plus" />
-        <span>Regist</span>
-      </b-button>
-      <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
-        <registration-form v-bind="editMember" v-on:registed="setRegistMember"></registration-form>
-      </b-modal>
-    </section>
+    <br>
+    <br>
   </div>
 </template>
 
@@ -175,14 +183,139 @@ export default {
         }
         return statusList[Object.keys(key.status)].icon;
       };
+    },
+    setStatusIconStyle() {
+      self = this;
+      return function (key) {
+        var statusList = this.$store.getters['status/currentStatus'];
+        // データが読み込めない場合、読み込み中のアイコンを表示
+        if( Object.keys(statusList).length === 0 ){
+          return { 'background-color' : "#ffffff" }
+        }
+        if( !key.status ){
+          return { 'background-color' : statusList[0].background_color }
+        }
+        return { 'background-color' : statusList[Object.keys(key.status)].background_color }
+      };
     }
-  },
+  }
 };
 </script>
 
 <style>
+.card-base{
+  width: 220px;
+}
+.card-content-base{
+  padding: 16px;
+}
+.card-header-title-base{
+  padding: 8px;
+  background-size: 20px 20px;
+	background-image:	linear-gradient(45deg, rgba(245, 245, 245, 0.5) 25%, transparent 25%,
+	 transparent 50%, rgba(245, 245, 245, 0.5) 50%, rgba(245, 245, 245, 0.5) 75%,
+	 transparent 75%, transparent),
+	linear-gradient(-45deg, rgba(245, 245, 245, 0.5) 25%, transparent 25%,
+	 transparent 50%, rgba(245, 245, 245, 0.5) 50%, rgba(245, 245, 245, 0.5) 75%,
+	 transparent 75%, transparent);
+}
+.tag{
+  margin: 0px 0px 0px 0px;
+}
 .selectedCard {
-  box-shadow : 3px 3px 6px -2px,
+  box-shadow: 3px 3px 6px -2px,
   3px 3px 8px rgba(255,255,255,0.8) inset;
+}
+.icon-base{
+  margin: 0px 5px 0px 0px;
+}
+.tag_base{
+  letter-spacing: -.4em; /* 文字間を詰めて隙間をなくす */
+}
+.tag_hint{
+  letter-spacing: normal; /* 文字間を元に戻す */
+}
+.tag_key{
+  letter-spacing: normal; /* 文字間を元に戻す */
+  display: inline-block;
+  font-size: 14px;
+  background-color: #363636;
+  color: #f5f5f5;
+  padding: 1px 4px;
+  margin: 0px 0px 8px 0px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  width: 24px;
+  text-align: center;
+}
+.tag_value{
+  letter-spacing: normal; /* 文字間を元に戻す */
+  display: inline-block;
+  font-size: 14px;
+  background-color: #f5f5f5;
+  padding: 1px 9px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.content{
+  text-align: left;
+}
+.card_footer_btn_wrapper{
+  text-align: right;
+  margin: 0px 4px 0px 0px;
+}
+/*
+.card_footer_btn {
+  display: inline-block;
+  text-decoration: none;
+  color: rgba(152, 152, 152, 0.43);
+  width: 24px;
+  font-size: 14px;
+  text-align: center;
+  overflow: hidden;
+  font-weight: bold;
+  background-image: linear-gradient(#e8e8e8 0%, #d6d6d6 100%);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.66);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
+  border-bottom: solid 2px #b5b5b5;
+  border-radius: 3px;
+  margin: 0px 4px 8px 0px;
+  padding: 1px 4px;
+}
+.card_footer_btn:active {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
+  border-bottom: none;
+}
+*/
+.card_footer_btn {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  text-align: center;/*中央寄せ*/
+  border-radius: 50%;/*角丸く*/
+  font-size: 12px;
+  line-height: 24px;/*＝幅と高さ*/
+  border: solid 1px #363636;
+  margin: 0px 4px 8px 0px;
+  padding: 1px;
+}
+.regist_button{
+  position: fixed;
+  bottom: 70px;
+  right: 24px;
+  display: block;
+  width: 56px;/*幅*/
+  height: 56px;/*高さ*/
+  background: #03a9f4;/*背景色*/
+  text-align: center;/*中央寄せ*/
+  border-radius: 50%;/*角丸く*/
+  transition: .3s;/*滑らかな動きに*/
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,.12), 0 2px 2px 0 rgba(0,0,0,.24);/*影*/
+  color: white;
+  font-size: 24px;
+  line-height: 56px;/*＝幅と高さ*/
+}
+.regist_button:hover{
+    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);/*浮き上がるように*/
 }
 </style>

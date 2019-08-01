@@ -3,7 +3,12 @@
     <nav class="navbar is-fixed-top is-dark" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item">
+          <!--
           <img src="logo.png">
+          !-->
+          <div class="logo-title">
+            Whiteboard
+          </div>
         </a>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" @click="isOpen = !isOpen" v-bind:class="{'is-active': isOpen}">
           <span aria-hidden="true"></span>
@@ -42,3 +47,13 @@ export default {
   }
 };
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Damion&display=swap');
+
+.logo-title{
+  font-family: 'Damion', cursive;
+  color: #ffffff;
+  font-size: 24px;
+}
+</style>
