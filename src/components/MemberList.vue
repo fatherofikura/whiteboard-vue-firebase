@@ -283,7 +283,7 @@ export default {
   display: block;
   width: 56px;/*幅*/
   height: 56px;/*高さ*/
-  background: #03a9f4;/*背景色*/
+  background: #42b983;/*背景色*/
   text-align: center;/*中央寄せ*/
   border-radius: 50%;/*角丸く*/
   transition: .3s;/*滑らかな動きに*/
