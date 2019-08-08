@@ -50,12 +50,18 @@ const actions = {
       commit('SELECT_MEMBER', snapshot);
     });
   },
+  selectMemberWithGroup({ commit }, info) {
+    firebase.database().ref('/member').orderByChild('group/' + info.groupID).equalTo(true).on('value', function(snapshot) {
+      commit('SELECT_MEMBER', snapshot);
+    });
+  },
   insertMember({ commit }, info) {
     var callfunction = firebase.functions().httpsCallable('insertMember');
     var postdata = {
       name : info.memberName,
       phoneNumber : info.memberPhoneNumber,
-      position : info.memberPosition
+      position : info.memberPosition,
+      group : info.memberGroup
     };
     callfunction(postdata).then(function(result) {
       // Read result of the Cloud Function.
@@ -76,7 +82,8 @@ const actions = {
       uid : info.memberUID,
       name : info.memberName,
       phoneNumber : info.memberPhoneNumber,
-      position : info.memberPosition
+      position : info.memberPosition,
+      group : info.memberGroup
     };
     callfunction(postdata).then(function(result) {
       // Read result of the Cloud Function.

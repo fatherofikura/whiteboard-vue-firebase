@@ -17,6 +17,21 @@
         </a>
       </div>
       <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
+        <div class="navbar-item">
+          <div class="control has-icons-left">
+            <div class="select">
+              <select v-model="selectedGroupID">
+                <option v-for="Group in displayGroup" :value="Group.id" :key="Group.id">
+                  {{ Group.name }}
+                </option>
+              </select>
+            </div>
+            <div class="icon is-small is-left">
+              <v-fa icon="users" />
+            </div>
+          </div>
+        </div>
+
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
@@ -37,12 +52,30 @@ export default {
   name: "navigationTopMenu",
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      selectedGroupID: 0
     }
+  },
+  created: function() {
+    this.$store.dispatch("group/selectGroup");
+  },
+  watch: {
+    selectedGroupID: function (newSelectedGroup, oldSelectedGroup) {
+      this.$store.dispatch("group/checkSelectedGroup", { selectedGroupID : newSelectedGroup } );
+    }
+  },
+  computed: {
+    displayGroup() {
+      return this.$store.getters['group/currentGroup'];
+    },
   },
   methods: {
     logout : function() {
       firebase.auth().signOut();
+    },
+    clickGroupButton : function(info, index) {
+      // this.$store.dispatch("member/changeStatus", { statusID : info.id, selectedMember : this.$store.getters['member/currentSelectedMember'] });
+      // console.log(info.name);
     }
   }
 };
@@ -55,5 +88,10 @@ export default {
   font-family: 'Damion', cursive;
   color: #ffffff;
   font-size: 24px;
+}
+.select select{
+  background-color: transparent;
+  border-color: transparent;
+  color: white;
 }
 </style>

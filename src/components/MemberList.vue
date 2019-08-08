@@ -97,14 +97,31 @@ export default {
     };
   },
   created: function() {
-    this.$store.dispatch("member/selectMember");
+    var group = {
+      groupID : this.$store.getters['group/currentSelectedGroup']
+    }
+    console.log('[created]GroupID : %s', group.groupID);
+    this.$store.dispatch("member/selectMemberWithGroup", group);
+  },
+  mounted: function() {
+    this.$store.watch(
+      (state, getters) => getters['group/currentSelectedGroup'],
+      (newValue, oldValue) => {
+        console.log('[Mounted]Group changed! %s => %s', oldValue, newValue);
+        var group = {
+          groupID : this.$store.getters['group/currentSelectedGroup']
+        }
+        this.$store.dispatch("member/selectMemberWithGroup", group);
+      }
+    );
   },
   methods: {
     setRegistMember : function(info) {
       var member = {
         memberName : info.memberName,
         memberPhoneNumber : info.memberPhoneNumber,
-        memberPosition : info.memberPosition
+        memberPosition : info.memberPosition,
+        memberGroup : this.$store.getters['group/currentSelectedGroup']
       };
       this.$store.dispatch("member/insertMember", member);
       this.isComponentModalActiveForRegistration = false;
@@ -114,7 +131,8 @@ export default {
         memberUID : info.memberUID,
         memberName : info.memberName,
         memberPhoneNumber : info.memberPhoneNumber,
-        memberPosition : info.memberPosition
+        memberPosition : info.memberPosition,
+        memberGroup : this.$store.getters['group/currentSelectedGroup']
       };
       this.$store.dispatch("member/updateMember", member);
       this.isComponentModalActiveForEdit = false;
