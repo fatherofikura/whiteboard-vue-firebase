@@ -44,7 +44,7 @@ exports.insertMember = functions.https.onCall( (data, context) => {
   // Write the new post's data simultaneously in the posts list and the user's post list.
   var updates = {};
   updates['/member/' + newPostKey] = postData;
-  updates['/member/' + uid + '/group'] = postGroupData;
+  updates['/member/' + newPostKey + '/group'] = postGroupData;
   return admin.database().ref().update(updates).then(snapshot => {
     return "";
   }).catch((error) => {
