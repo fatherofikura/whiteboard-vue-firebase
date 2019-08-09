@@ -43,7 +43,7 @@
                 </b-tooltip>
               </div>
               <b-modal :active.sync="isComponentModalActiveForEdit" has-modal-card>
-                <registration-form v-bind="editMember" v-on:deleted="setEditMember"></registration-form>
+                <registration-form v-bind="editMember" v-on:edited="setEditMember"></registration-form>
               </b-modal>
               <b-modal :active.sync="isComponentModalActiveForConfirmation" has-modal-card>
                 <confirmation-form v-bind="deleteMember" v-on:deleted="setDeleteMember"></confirmation-form>

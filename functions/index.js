@@ -33,10 +33,10 @@ exports.insertMember = functions.https.onCall( (data, context) => {
   var postData = {
     name: name,
     phoneNumber: phoneNumber,
-    position: position
-  };
-  var postGroupData = {
-    [group] : true
+    position: position,
+    group:{
+      [group] : true
+    }
   };
 
   // Get a key for a new Post.
@@ -44,7 +44,6 @@ exports.insertMember = functions.https.onCall( (data, context) => {
   // Write the new post's data simultaneously in the posts list and the user's post list.
   var updates = {};
   updates['/member/' + newPostKey] = postData;
-  updates['/member/' + newPostKey + '/group'] = postGroupData;
   return admin.database().ref().update(updates).then(snapshot => {
     return "";
   }).catch((error) => {
@@ -90,15 +89,14 @@ exports.updateMember = functions.https.onCall( (data, context) => {
     name: name,
     phoneNumber: phoneNumber,
     position: position,
-  };
-  var postGroupData = {
-    [group] : true
+    group:{
+      [group] : true
+    }
   };
 
   // update
   var updates = {};
   updates['/member/' + uid] = postData;
-  updates['/member/' + uid + '/group'] = postGroupData;
   return admin.database().ref().update(updates).then(snapshot => {
     return "";
   }).catch((error) => {
