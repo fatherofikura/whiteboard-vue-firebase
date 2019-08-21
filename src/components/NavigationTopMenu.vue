@@ -62,6 +62,12 @@ export default {
   watch: {
     selectedGroupID: function (newSelectedGroup, oldSelectedGroup) {
       this.$store.dispatch("group/checkSelectedGroup", { selectedGroupID : newSelectedGroup } );
+      var user = firebase.auth().currentUser;
+      if (user) {
+        this.$store.dispatch("user/updateUser", { uid : user.uid, group : newSelectedGroup } );
+      } else {
+        // No user is signed in.
+      }
     }
   },
   computed: {
@@ -72,10 +78,6 @@ export default {
   methods: {
     logout : function() {
       firebase.auth().signOut();
-    },
-    clickGroupButton : function(info, index) {
-      // this.$store.dispatch("member/changeStatus", { statusID : info.id, selectedMember : this.$store.getters['member/currentSelectedMember'] });
-      // console.log(info.name);
     }
   }
 };

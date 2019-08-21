@@ -183,3 +183,50 @@ exports.updateStatus = functions.https.onCall( (data, context) => {
     throw new functions.https.HttpsError('unknown', error.message, error);
   });
 });
+
+// ------------------------------------------
+// ユーザ情報更新用
+// ------------------------------------------
+exports.updateUser = functions.https.onCall( (data, context) => {
+
+  const uid = data.uid;
+  const group = data.group;
+
+  // Checking attribute.
+  if (!(typeof uid === 'string') || uid.length === 0) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+      'one arguments "uid" containing the uid to add.');
+  }
+
+    // Checking attribute.
+    if (!(typeof group === 'string') || group.length === 0) {
+      // Throwing an HttpsError so that the client gets the error details.
+      throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+        'one arguments "group" containing the group to add.');
+    }
+
+  // Checking that the user is authenticated.
+  if (!context.auth) {
+    // Throwing an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+      'while authenticated.');
+  }
+
+  // A post entry.
+  var postData = {
+    group:{
+      [group] : true
+    }
+  };
+
+  // update
+  var updates = {};
+  updates['/user/' + uid] = postData;
+  return admin.database().ref().update(updates).then(snapshot => {
+    return "";
+  }).catch((error) => {
+    // Re-throwing the error as an HttpsError so that the client gets the error details.
+    throw new functions.https.HttpsError('unknown', error.message, error);
+  });
+});

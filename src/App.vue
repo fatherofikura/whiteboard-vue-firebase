@@ -38,6 +38,7 @@ export default {
   beforeCreate: function() {
     firebase.auth().onAuthStateChanged( user=> {
       if (user) {
+        this.$store.dispatch("user/selectUser", { uid : user.uid });
         this.isLogin = true;
         this.userData = user;
       }
