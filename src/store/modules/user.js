@@ -11,7 +11,7 @@ const state = {
 
 const mutations = {
   'SELECT_USER'(state, info) {
-    console.log(info);
+    state.user = info.val();
   },
   'UPDATE_USER'(state, info) {
     console.log(info);
@@ -20,9 +20,9 @@ const mutations = {
 
 const actions = {
   selectUser({ commit }, info) {
-    // firebase.database().ref('/user' + ).on('value', function(snapshot) {
-      commit('SELECT_USER', info);
-    // });
+    firebase.database().ref('/user/' + info.uid).once('value', function(snapshot) {
+      commit('SELECT_USER', snapshot);
+    });
   },
   updateUser({ commit }, info) {
     var callfunction = firebase.functions().httpsCallable('updateUser');

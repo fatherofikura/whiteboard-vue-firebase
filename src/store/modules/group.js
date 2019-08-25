@@ -29,7 +29,10 @@ const mutations = {
         break;
       }
     }
-  }
+  },
+  'UPDATE_SELECTED_GROUP'(state, info) {
+    state.selectedGroupID = info.selectedGroupID;
+  },
 };
 
 const actions = {
@@ -40,6 +43,9 @@ const actions = {
   },
   checkSelectedGroup({ commit }, info) {
     commit('CHECK_SELECTED_GROUP', info);
+  },
+  updateSelectedGroup({ commit }, info) {
+    commit('UPDATE_SELECTED_GROUP', info);
   }
 };
 
