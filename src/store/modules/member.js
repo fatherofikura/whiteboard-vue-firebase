@@ -61,6 +61,7 @@ const actions = {
       name : info.memberName,
       phoneNumber : info.memberPhoneNumber,
       position : info.memberPosition,
+      status : info.memberStatus,
       group : info.memberGroup
     };
     callfunction(postdata).then(function(result) {
@@ -83,6 +84,7 @@ const actions = {
       name : info.memberName,
       phoneNumber : info.memberPhoneNumber,
       position : info.memberPosition,
+      status : info.memberStatus,
       group : info.memberGroup
     };
     callfunction(postdata).then(function(result) {

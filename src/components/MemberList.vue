@@ -86,13 +86,15 @@ export default {
         memberUID: '',
         memberName: '',
         memberPhoneNumber: '',
-        memberPosition: ''
+        memberPosition: '',
+        memberStatus: ''
       },
       deleteMember: {
         memberUID: '',
         memberName: '',
         memberPhoneNumber: '',
-        memberPosition: ''
+        memberPosition: '',
+        memberStatus: ''
       }
     };
   },
@@ -121,6 +123,7 @@ export default {
         memberName : info.memberName,
         memberPhoneNumber : info.memberPhoneNumber,
         memberPosition : info.memberPosition,
+        memberStatus : info.memberStatus,
         memberGroup : this.$store.getters['group/currentSelectedGroup']
       };
       this.$store.dispatch("member/insertMember", member);
@@ -132,6 +135,7 @@ export default {
         memberName : info.memberName,
         memberPhoneNumber : info.memberPhoneNumber,
         memberPosition : info.memberPosition,
+        memberStatus : info.memberStatus,
         memberGroup : this.$store.getters['group/currentSelectedGroup']
       };
       this.$store.dispatch("member/updateMember", member);
@@ -152,13 +156,26 @@ export default {
       this.editMember.memberName = "";
       this.editMember.memberPhoneNumber = "";
       this.editMember.memberPosition = "";
+      // statusが空の場合もあるので空の場合は0をセット
+      if( !info.status ){
+        this.editMember.memberPosition = 0;
+      }else{
+        this.editMember.memberPosition = Object.keys(info.status);
+      }
       this.isComponentModalActiveForRegistration = true;
     },
     clickEditButton : function(info, index) {
+      console.log(info);
       this.editMember.memberUID = info.id;
       this.editMember.memberName = info.name;
       this.editMember.memberPhoneNumber = info.phoneNumber;
       this.editMember.memberPosition = info.position;
+      // statusが空の場合もあるので空の場合は0をセット
+      if( !info.status ){
+        this.editMember.memberPosition = 0;
+      }else{
+        this.editMember.memberPosition = Object.keys(info.status);
+      }
       this.isComponentModalActiveForEdit = true;
     },
     clickDeleteButton : function(info, index) {
@@ -166,6 +183,12 @@ export default {
       this.deleteMember.memberName = info.name;
       this.deleteMember.memberPhoneNumber = info.phoneNumber;
       this.deleteMember.memberPosition = info.position;
+      // statusが空の場合もあるので空の場合は0をセット
+      if( !info.status ){
+        this.editMember.memberPosition = 0;
+      }else{
+        this.editMember.memberPosition = Object.keys(info.status);
+      }
       this.isComponentModalActiveForConfirmation = true;
     }
   },

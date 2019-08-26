@@ -15,6 +15,7 @@ exports.insertMember = functions.https.onCall( (data, context) => {
   const phoneNumber = data.phoneNumber;
   const position = data.position;
   const group = data.group;
+  const status = data.status;
 
   // Checking attribute.
   if (!(typeof name === 'string') || name.length === 0) {
@@ -36,6 +37,9 @@ exports.insertMember = functions.https.onCall( (data, context) => {
     position: position,
     group:{
       [group] : true
+    },
+    status:{
+      [status] : true
     }
   };
 
@@ -62,6 +66,7 @@ exports.updateMember = functions.https.onCall( (data, context) => {
   const phoneNumber = data.phoneNumber;
   const position = data.position;
   const group = data.group;
+  const status = data.status;
 
   // Checking attribute.
   if (!(typeof uid === 'string') || uid.length === 0) {
@@ -91,6 +96,9 @@ exports.updateMember = functions.https.onCall( (data, context) => {
     position: position,
     group:{
       [group] : true
+    },
+    status:{
+      [status] : true
     }
   };
 
