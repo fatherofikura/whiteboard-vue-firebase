@@ -156,7 +156,7 @@ export default {
       this.editMember.memberName = "";
       this.editMember.memberPhoneNumber = "";
       this.editMember.memberPosition = "";
-      // 初期作成時は
+      // 初期作成時は0
       this.editMember.memberStatus = 0;
       this.isComponentModalActiveForRegistration = true;
     },

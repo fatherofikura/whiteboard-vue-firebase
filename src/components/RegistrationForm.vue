@@ -38,7 +38,7 @@ export default {
       uid: this.memberUID,
       name: this.memberName,
       phoneNumber: this.memberPhoneNumber,
-      position: this.memberPositions,
+      position: this.memberPosition,
       status: this.memberStatus
     }
   },
