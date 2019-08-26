@@ -156,12 +156,8 @@ export default {
       this.editMember.memberName = "";
       this.editMember.memberPhoneNumber = "";
       this.editMember.memberPosition = "";
-      // statusが空の場合もあるので空の場合は0をセット
-      if( !info.status ){
-        this.editMember.memberPosition = 0;
-      }else{
-        this.editMember.memberPosition = Object.keys(info.status);
-      }
+      // 初期作成時は
+      this.editMember.memberStatus = 0;
       this.isComponentModalActiveForRegistration = true;
     },
     clickEditButton : function(info, index) {
@@ -172,9 +168,9 @@ export default {
       this.editMember.memberPosition = info.position;
       // statusが空の場合もあるので空の場合は0をセット
       if( !info.status ){
-        this.editMember.memberPosition = 0;
+        this.editMember.memberStatus = 0;
       }else{
-        this.editMember.memberPosition = Object.keys(info.status);
+        this.editMember.memberStatus = Object.keys(info.status);
       }
       this.isComponentModalActiveForEdit = true;
     },
@@ -185,9 +181,9 @@ export default {
       this.deleteMember.memberPosition = info.position;
       // statusが空の場合もあるので空の場合は0をセット
       if( !info.status ){
-        this.editMember.memberPosition = 0;
+        this.editMember.memberStatus = 0;
       }else{
-        this.editMember.memberPosition = Object.keys(info.status);
+        this.editMember.memberStatus = Object.keys(info.status);
       }
       this.isComponentModalActiveForConfirmation = true;
     }
