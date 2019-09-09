@@ -42,6 +42,26 @@ const actions = {
       window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
       + code + '\nError Message:' + message + '\nError Details:' + details);
     });
+  },
+  updateUserWithSortedList({ commit }, info) {
+    var callfunction = firebase.functions().httpsCallable('updateUserWithSortedList');
+    var postdata = {
+      uid : info.uid,
+      group : info.group,
+      sortedList : info.sortedList
+    };
+    callfunction(postdata).then(function(result) {
+      // Read result of the Cloud Function.
+      commit('UPDATE_USER_WITH_SORTED_LIST', postdata);
+    }).catch(function(error) {
+      // Getting the Error details.
+      var code = error.code;
+      var message = error.message;
+      var details = error.details;
+      console.error('There was an error when calling the Cloud Function', error);
+      window.alert('There was an error when calling the Cloud Function:\n\nError Code: '
+      + code + '\nError Message:' + message + '\nError Details:' + details);
+    });
   }
 };
 

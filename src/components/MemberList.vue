@@ -69,6 +69,8 @@
 import draggable from 'vuedraggable';
 import RegistrationForm from "./RegistrationForm.vue";
 import ConfirmationForm from "./ConfirmationForm.vue";
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 export default {
   components: {
@@ -202,9 +204,23 @@ export default {
       this.isComponentModalActiveForConfirmation = true;
     },
     draggableUpdate(event) {
+      var user = firebase.auth().currentUser;
+
       console.log(event);
       console.log("oldIndex : " + event.oldIndex + " -> " + "newIndex : " + event.newIndex);
-      console.log(this.$refs.draggable._sortable.toArray());
+      console.log("sortedList: " + this.$refs.draggable._sortable.toArray());
+      console.log("group : " + this.$store.getters['group/currentSelectedGroup']);
+      console.log("user : " + user.uid);
+
+      if (user) {
+        this.$store.dispatch("user/updateUserWithSortedList", {
+          uid : user.uid,
+          group : this.$store.getters['group/currentSelectedGroup'],
+          sortedList : this.$refs.draggable._sortable.toArray()
+        });
+      } else {
+        // No user is signed in.
+      }
     }
   },
   computed: {
