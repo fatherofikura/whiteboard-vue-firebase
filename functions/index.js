@@ -276,12 +276,12 @@ exports.updateUserWithSortedList = functions.https.onCall( (data, context) => {
 
   // A post entry.
   var postData = {
-    [group] : sortedList
+    list : sortedList
   };
 
   // update
   var updates = {};
-  updates['/user/' + uid +'/sortedList'] = postData;
+  updates['/user/' + uid +'/sortedList/' + group ] = postData;
   return admin.database().ref().update(updates).then(snapshot => {
     return "";
   }).catch((error) => {

@@ -216,7 +216,7 @@ export default {
         this.$store.dispatch("user/updateUserWithSortedList", {
           uid : user.uid,
           group : this.$store.getters['group/currentSelectedGroup'],
-          sortedList : this.$refs.draggable._sortable.toArray()
+          sortedList : this.$refs.draggable._sortable.toArray().toString()
         });
       } else {
         // No user is signed in.

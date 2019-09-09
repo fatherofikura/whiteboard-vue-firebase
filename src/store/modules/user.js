@@ -16,6 +16,9 @@ const mutations = {
   'UPDATE_USER_WITH_GROUP'(state, info) {
     console.log(info);
   },
+  'UPDATE_USER_WITH_SORTED_LIST'(state, info) {
+    console.log(info);
+  },
 };
 
 const actions = {
