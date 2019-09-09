@@ -13,7 +13,7 @@ const mutations = {
   'SELECT_USER'(state, info) {
     state.user = info.val();
   },
-  'UPDATE_USER'(state, info) {
+  'UPDATE_USER_WITH_GROUP'(state, info) {
     console.log(info);
   },
 };
@@ -24,15 +24,15 @@ const actions = {
       commit('SELECT_USER', snapshot);
     });
   },
-  updateUser({ commit }, info) {
-    var callfunction = firebase.functions().httpsCallable('updateUser');
+  updateUserWithGroup({ commit }, info) {
+    var callfunction = firebase.functions().httpsCallable('updateUserWithGroup');
     var postdata = {
       uid : info.uid,
       group : info.group
     };
     callfunction(postdata).then(function(result) {
       // Read result of the Cloud Function.
-      commit('UPDATE_USER', postdata);
+      commit('UPDATE_USER_WITH_GROUP', postdata);
     }).catch(function(error) {
       // Getting the Error details.
       var code = error.code;

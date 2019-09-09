@@ -64,7 +64,7 @@ export default {
     this.$store.watch(
       (state, getters) => getters['user/currentUser'],
       (newValue, oldValue) => {
-        console.log('[Mounted]User Info readed! %s => %s', oldValue.group, newValue.group);
+        console.log('[Mounted@NavigationTopMenu]User Info readed! %s => %s', oldValue.group, newValue.group);
         var group = {
           selectedGroupID : Object.keys(newValue.group)[0]　// 先頭を取得する。(複数取られることはないが念の為)
         }
@@ -78,7 +78,7 @@ export default {
       this.$store.dispatch("group/checkSelectedGroup", { selectedGroupID : newSelectedGroup } );
       var user = firebase.auth().currentUser;
       if (user) {
-        this.$store.dispatch("user/updateUser", { uid : user.uid, group : newSelectedGroup } );
+        this.$store.dispatch("user/updateUserWithGroup", { uid : user.uid, group : newSelectedGroup } );
       } else {
         // No user is signed in.
       }

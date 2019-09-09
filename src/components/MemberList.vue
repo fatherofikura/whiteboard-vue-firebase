@@ -1,7 +1,7 @@
 <template>
   <div class="memberlist">
     <section>
-      <draggable class="columns is-multiline">
+      <draggable ref="draggable" class="columns is-multiline" @update="draggableUpdate">
         <div v-for="(Member, index) in displayMember" v-bind:key="index">
           <div class="column">
             <b-collapse class="card card-base" v-bind:class="selectedCardClass(Member)">
@@ -82,6 +82,7 @@ export default {
       isComponentModalActiveForRegistration: false,
       isComponentModalActiveForConfirmation: false,
       isComponentModalActiveForEdit: false,
+      isDragging: false,
       editMember: {
         memberUID: '',
         memberName: '',
@@ -109,11 +110,24 @@ export default {
     this.$store.watch(
       (state, getters) => getters['group/currentSelectedGroup'],
       (newValue, oldValue) => {
-        console.log('[Mounted]Group changed! %s => %s', oldValue, newValue);
+        console.log('[Mounted@MemberList]Group changed! %s => %s', oldValue, newValue);
         var group = {
           groupID : this.$store.getters['group/currentSelectedGroup']
         }
         this.$store.dispatch("member/selectMemberWithGroup", group);
+      }
+    );
+    this.$store.watch(
+      (state, getters) => getters['user/currentUser'],
+      (newValue, oldValue) => {
+        console.log('[Mounted@MemberList]User Info readed! %s => %s', oldValue.group, newValue.group);
+        /*
+        var group = {
+          selectedGroupID : Object.keys(newValue.group)[0]　// 先頭を取得する。(複数取られることはないが念の為)
+        }
+        this.$store.dispatch("group/updateSelectedGroup", group );
+        _this.selectedGroupID = group.selectedGroupID;
+        */
       }
     );
   },
@@ -186,6 +200,11 @@ export default {
         this.editMember.memberStatus = Object.keys(info.status);
       }
       this.isComponentModalActiveForConfirmation = true;
+    },
+    draggableUpdate(event) {
+      console.log(event);
+      console.log("oldIndex : " + event.oldIndex + " -> " + "newIndex : " + event.newIndex);
+      console.log(this.$refs.draggable._sortable.toArray());
     }
   },
   computed: {

@@ -195,7 +195,7 @@ exports.updateStatus = functions.https.onCall( (data, context) => {
 // ------------------------------------------
 // ユーザ情報更新用
 // ------------------------------------------
-exports.updateUser = functions.https.onCall( (data, context) => {
+exports.updateUserWithGroup = functions.https.onCall( (data, context) => {
 
   const uid = data.uid;
   const group = data.group;
@@ -223,14 +223,12 @@ exports.updateUser = functions.https.onCall( (data, context) => {
 
   // A post entry.
   var postData = {
-    group:{
-      [group] : true
-    }
+    [group] : true
   };
 
   // update
   var updates = {};
-  updates['/user/' + uid] = postData;
+  updates['/user/' + uid +'/group'] = postData;
   return admin.database().ref().update(updates).then(snapshot => {
     return "";
   }).catch((error) => {
