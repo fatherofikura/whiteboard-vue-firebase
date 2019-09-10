@@ -254,13 +254,6 @@ exports.updateUserWithSortedList = functions.https.onCall( (data, context) => {
   }
 
   // Checking attribute.
-  if (!(typeof group === 'string') || group.length === 0) {
-    // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
-      'one arguments "group" containing the group to add.');
-  }
-
-  // Checking attribute.
   if (!(typeof sortedList === 'string') || sortedList.length === 0) {
     // Throwing an HttpsError so that the client gets the error details.
     throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +

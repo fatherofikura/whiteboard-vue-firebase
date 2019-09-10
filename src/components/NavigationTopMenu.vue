@@ -64,7 +64,7 @@ export default {
     this.$store.watch(
       (state, getters) => getters['user/currentUser'],
       (newValue, oldValue) => {
-        console.log('[Mounted@NavigationTopMenu]User Info readed! %s => %s', oldValue.group, newValue.group);
+        console.log('[Mounted@NavigationTopMenu]User Info(group) readed! %s => %s', oldValue.group, newValue.group);
         var group = {
           selectedGroupID : Object.keys(newValue.group)[0]　// 先頭を取得する。(複数取られることはないが念の為)
         }
