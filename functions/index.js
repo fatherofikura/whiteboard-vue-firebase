@@ -150,6 +150,7 @@ exports.updateStatus = functions.https.onCall( (data, context) => {
 
   const uidList = data.selectedMember;
   const statusID = data.statusID;
+  const note = data.note;
 
   // Checking attribute.
   if (!(uidList.length >= 0)){
@@ -180,6 +181,7 @@ exports.updateStatus = functions.https.onCall( (data, context) => {
   var updates = {};
   for( var i=0; i<uidList.length; i++ ) {
     updates['/member/' + uidList[i] + '/status'] = postMemberData;
+    updates['/member/' + uidList[i] + '/note'] = note;
   }
 
   console.log(updates);

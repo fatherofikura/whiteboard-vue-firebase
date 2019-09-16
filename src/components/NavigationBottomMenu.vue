@@ -15,6 +15,23 @@
             </a>
           </div>
         </div>
+        <div class="notes navbar-item">
+          <b-field horizonta>
+            <div class="control">
+              <b-input placeholder="補足情報を記入してください。" v-model="note"></b-input>
+            </div>
+            <div class="control">
+              <b-dropdown position="is-top-left">
+                <button class="button button-dropdown is-dark" slot="trigger">
+                  <v-fa icon="chevron-down" />
+                </button>
+                <b-dropdown-item v-for="Destination in displayDestination" :value="Destination.id" :key="Destination.id" @click="changeNote(Destination.name)">
+                  {{ Destination.name }}
+                </b-dropdown-item>
+              </b-dropdown>
+            </div>
+          </b-field>
+        </div>
       </div>
     </nav>
   </div>
@@ -25,20 +42,48 @@ export default {
   name: "navigationBottomMenu",
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      note : ""
     }
   },
   created: function() {
     this.$store.dispatch("status/selectStatus");
+    var group = {
+      groupID : this.$store.getters['group/currentSelectedGroup']
+    }
+    console.log('[created]GroupID : %s', group.groupID);
+    this.$store.dispatch("destination/selectDestinationWithGroup", group);
+  },
+  mounted: function() {
+    this.$store.watch(
+      (state, getters) => getters['group/currentSelectedGroup'],
+      (newValue, oldValue) => {
+        console.log('[Mounted@NavigationBottomMenu]Group changed! %s => %s', oldValue, newValue);
+        var group = {
+          groupID : this.$store.getters['group/currentSelectedGroup']
+        }
+        this.$store.dispatch("destination/selectDestinationWithGroup", group);
+      }
+    );
   },
   computed: {
     displayStatus() {
       return this.$store.getters['status/currentStatus'];
     },
+    displayDestination() {
+      return this.$store.getters['destination/currentDestination'];
+    },
   },
   methods: {
     clickStatusButton : function(info, index) {
-      this.$store.dispatch("member/changeStatus", { statusID : info.id, selectedMember : this.$store.getters['member/currentSelectedMember'] });
+      this.$store.dispatch("member/changeStatus", {
+        statusID : info.id,
+        selectedMember : this.$store.getters['member/currentSelectedMember'] ,
+        note : this.note
+      });
+    },
+    changeNote(info) {
+      this.note = info;
     }
   }
 };
@@ -78,5 +123,8 @@ export default {
 
 .icon-base{
   margin: 0px 5px 0px 0px;
+}
+.button-dropdown{
+  color: black;
 }
 </style>

@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/functions';
 import 'firebase/database';
+import { notEqual } from 'assert';
 
 const namespaced = true;
 
@@ -125,7 +126,8 @@ const actions = {
     var callfunction = firebase.functions().httpsCallable('updateStatus');
     var postdata = {
       statusID : info.statusID,
-      selectedMember : info.selectedMember
+      selectedMember : info.selectedMember,
+      note : info.note
     };
     callfunction(postdata).then(function(result) {
       // Read result of the Cloud Function.

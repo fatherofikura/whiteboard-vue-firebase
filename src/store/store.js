@@ -5,6 +5,7 @@ import member from './modules/member';
 import status from './modules/status';
 import group from './modules/group';
 import user from './modules/user';
+import destination from './modules/destination';
 
 Vue.use(Vuex);
 
@@ -14,5 +15,6 @@ export default new Vuex.Store({
     status : status,
     group : group,
     user : user,
+    destination : destination,
   }
 });
