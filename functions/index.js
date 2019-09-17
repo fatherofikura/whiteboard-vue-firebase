@@ -67,6 +67,7 @@ exports.updateMember = functions.https.onCall( (data, context) => {
   const position = data.position;
   const group = data.group;
   const status = data.status;
+  const note = data.note;
 
   // Checking attribute.
   if (!(typeof uid === 'string') || uid.length === 0) {
@@ -94,12 +95,13 @@ exports.updateMember = functions.https.onCall( (data, context) => {
     name: name,
     phoneNumber: phoneNumber,
     position: position,
+    note : note,
     group:{
       [group] : true
     },
     status:{
       [status] : true
-    }
+    },
   };
 
   // update

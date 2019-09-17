@@ -27,6 +27,13 @@
                       </div>
                     </b-tooltip>
                     <div class="tag_value">{{ Member.phoneNumber }}</div>
+                    <br>
+                    <b-tooltip class="tag_hint" label="Note" type="is-dark" position="is-right">
+                      <div class="tag_key">
+                        <v-fa icon="bookmark" />
+                      </div>
+                    </b-tooltip>
+                    <div class="tag_value">{{ Member.note }}</div>
                   </div>
                 </div>
               </div>
@@ -93,14 +100,16 @@ export default {
         memberName: '',
         memberPhoneNumber: '',
         memberPosition: '',
-        memberStatus: ''
+        memberStatus: '',
+        memberNote: ''
       },
       deleteMember: {
         memberUID: '',
         memberName: '',
         memberPhoneNumber: '',
         memberPosition: '',
-        memberStatus: ''
+        memberStatus: '',
+        memberNote: ''
       }
     };
   },
@@ -134,6 +143,7 @@ export default {
         memberPhoneNumber : info.memberPhoneNumber,
         memberPosition : info.memberPosition,
         memberStatus : info.memberStatus,
+        memberNote : info.memberNote,
         memberGroup : this.$store.getters['group/currentSelectedGroup']
       };
       this.$store.dispatch("member/insertMember", member);
@@ -146,6 +156,7 @@ export default {
         memberPhoneNumber : info.memberPhoneNumber,
         memberPosition : info.memberPosition,
         memberStatus : info.memberStatus,
+        memberNote : info.memberNote,
         memberGroup : this.$store.getters['group/currentSelectedGroup']
       };
       this.$store.dispatch("member/updateMember", member);
@@ -166,8 +177,8 @@ export default {
       this.editMember.memberName = "";
       this.editMember.memberPhoneNumber = "";
       this.editMember.memberPosition = "";
-      // 初期作成時は0
-      this.editMember.memberStatus = 0;
+      this.editMember.memberStatus = 0; // 初期作成時は0
+      this.editMember.memberNote = ""; // 初期作成時は空
       this.isComponentModalActiveForRegistration = true;
     },
     clickEditButton : function(info, index) {
@@ -182,6 +193,7 @@ export default {
       }else{
         this.editMember.memberStatus = Object.keys(info.status);
       }
+      this.editMember.memberNote = info.note;
       this.isComponentModalActiveForEdit = true;
     },
     clickDeleteButton : function(info, index) {
@@ -195,6 +207,7 @@ export default {
       }else{
         this.editMember.memberStatus = Object.keys(info.status);
       }
+      this.deleteMember.memberNote = info.note;
       this.isComponentModalActiveForConfirmation = true;
     },
     draggableUpdate(event) {

@@ -32,14 +32,15 @@
 
 <script>
 export default {
-  props: ['memberUID', 'memberName', 'memberPhoneNumber', 'memberPosition', 'memberStatus'],
+  props: ['memberUID', 'memberName', 'memberPhoneNumber', 'memberPosition', 'memberStatus', 'memberNote'],
   data() {
     return {
       uid: this.memberUID,
       name: this.memberName,
       phoneNumber: this.memberPhoneNumber,
       position: this.memberPosition,
-      status: this.memberStatus
+      status: this.memberStatus,
+      note : this.memberNote
     }
   },
   methods: {
@@ -49,7 +50,8 @@ export default {
         memberName : this.name,
         memberPhoneNumber : this.phoneNumber,
         memberPosition : this.position,
-        memberStatus : this.status
+        memberStatus : this.status,
+        memberNote : this.note
       };
       if (this.uid == '') {
         this.$emit('registed', memberInfo );
