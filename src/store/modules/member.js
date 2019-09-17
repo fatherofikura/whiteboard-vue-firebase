@@ -86,6 +86,7 @@ const actions = {
       phoneNumber : info.memberPhoneNumber,
       position : info.memberPosition,
       status : info.memberStatus,
+      note : info.memberNote,
       group : info.memberGroup
     };
     callfunction(postdata).then(function(result) {
