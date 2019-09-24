@@ -109,7 +109,9 @@ export default {
         memberPhoneNumber: '',
         memberPosition: '',
         memberStatus: '',
-        memberNote: ''
+        memberNote: '',
+        memberStatusIcon: '',
+        memberStatusIconStyle: '',
       }
     };
   },
@@ -203,11 +205,13 @@ export default {
       this.deleteMember.memberPosition = info.position;
       // statusが空の場合もあるので空の場合は0をセット
       if( !info.status ){
-        this.editMember.memberStatus = 0;
+        this.deleteMember.memberStatus = 0;
       }else{
-        this.editMember.memberStatus = Object.keys(info.status);
+        this.deleteMember.memberStatus = Object.keys(info.status);
       }
       this.deleteMember.memberNote = info.note;
+      this.deleteMember.memberStatusIcon = this.calculateStatusIcon(this.deleteMember.memberStatus);
+      this.deleteMember.memberStatusIconStyle = this.calculateStatusIconStyle(this.deleteMember.memberStatus);
       this.isComponentModalActiveForConfirmation = true;
     },
     draggableUpdate(event) {
@@ -227,6 +231,32 @@ export default {
       var order = this.$store.getters['user/currentUser'].sortedList[this.$store.getters['group/currentSelectedGroup']].list.split(',');
       this.$refs.draggable._sortable.sort(order);
     },
+    calculateStatusIcon(info) {
+      console.log(info);
+      console.log("[DEBUG] memberStatus : %s", info);
+      var statusList = this.$store.getters['status/currentStatus'];
+      // データが読み込めない場合、読み込み中のアイコンを表示
+      if( Object.keys(statusList).length === 0 ){
+        return "spinner"
+      }
+      if( !info ){
+        return statusList[0].icon;
+      }
+      // 配列の先頭のIndexを使用(配列だが複数の値を保持することはないと思うが念の為)
+      return statusList[info[0]].icon;
+    },
+    calculateStatusIconStyle(info) {
+      var statusList = this.$store.getters['status/currentStatus'];
+      // データが読み込めない場合、読み込み中のアイコンを表示
+      if( Object.keys(statusList).length === 0 ){
+        return { 'background-color' : "#ffffff" }
+      }
+      if( !info ){
+        return { 'background-color' : statusList[0].background_color }
+      }
+      // 配列の先頭のIndexを使用(配列だが複数の値を保持することはないと思うが念の為)
+      return { 'background-color' : statusList[info[0]].background_color }
+    }
   },
   computed: {
     displayMember() {
