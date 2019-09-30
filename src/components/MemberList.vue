@@ -61,9 +61,6 @@
         <div class="regist_button" @click="clickRegistButton()">
           <v-fa icon="user-plus" />
         </div>
-        <div class="debug_button" @click="clickDebugButton()">
-          <v-fa icon="bug" />
-        </div>
         <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
           <registration-form v-bind="editMember" v-on:registed="setRegistMember"></registration-form>
         </b-modal>
@@ -227,10 +224,6 @@ export default {
         // No user is signed in.
       }
     },
-    clickDebugButton : function() {
-      var order = this.$store.getters['user/currentUser'].sortedList[this.$store.getters['group/currentSelectedGroup']].list.split(',');
-      this.$refs.draggable._sortable.sort(order);
-    },
     calculateStatusIcon(info) {
       console.log(info);
       console.log("[DEBUG] memberStatus : %s", info);
@@ -386,22 +379,6 @@ export default {
 .regist_button{
   position: fixed;
   bottom: 70px;
-  right: 24px;
-  display: block;
-  width: 56px;/*幅*/
-  height: 56px;/*高さ*/
-  background: #42b983;/*背景色*/
-  text-align: center;/*中央寄せ*/
-  border-radius: 50%;/*角丸く*/
-  transition: .3s;/*滑らかな動きに*/
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,.12), 0 2px 2px 0 rgba(0,0,0,.24);/*影*/
-  color: white;
-  font-size: 24px;
-  line-height: 56px;/*＝幅と高さ*/
-}
-.debug_button{
-  position: fixed;
-  bottom: 150px;
   right: 24px;
   display: block;
   width: 56px;/*幅*/
