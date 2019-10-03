@@ -303,8 +303,13 @@ export default {
 </script>
 
 <style>
+.memberlist{
+  margin: 60px 60px 0px 60px;
+}
 .card-base{
   width: 220px;
+  box-shadow: 3px 3px 6px -2px,
+  3px 3px 8px rgba(255,255,255,0.8) inset;
 }
 .card-content-base{
   padding: 16px;
@@ -323,8 +328,8 @@ export default {
   margin: 0px 0px 0px 0px;
 }
 .selectedCard {
-  box-shadow: 3px 3px 6px -2px,
-  3px 3px 8px rgba(255,255,255,0.8) inset;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  color: #4a4a4a;
 }
 .icon-base{
   margin: 0px 5px 0px 0px;

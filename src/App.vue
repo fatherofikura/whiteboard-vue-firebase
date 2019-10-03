@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-    <div class="container">
-      <pulse-loader v-if="!loading"></pulse-loader>
-      <Home v-if="!isLogin && loading"></Home>
-      <Whiteboard v-if="isLogin && loading" :user="userData"></Whiteboard>
-    </div>
+    <!--
+    <pulse-loader v-if="!loading"></pulse-loader>
+    !-->
+    <b-loading :is-full-page="true" :active.sync="isLoading"></b-loading>
+    <Home v-if="!isLogin && !isLoading"></Home>
+    <Whiteboard v-if="isLogin && !isLoading" :user="userData"></Whiteboard>
   </div>
 </template>
 
@@ -27,7 +28,7 @@ export default {
     return {
       isLogin: false,
       userData: null,
-      loading: false
+      isLoading: true
     };
   },
   components: {
@@ -46,7 +47,7 @@ export default {
         this.isLogin = false;
         this.userData = null;
       };
-      this.loading=true;
+      this.isLoading=false;
     });
   }
 };
@@ -59,7 +60,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  background-attachment: fixed;
+  background-image: url("assets/back.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height:100vh;
 }
 
 h1, h2 {

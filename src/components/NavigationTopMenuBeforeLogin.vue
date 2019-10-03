@@ -17,7 +17,7 @@
         <div class="navbar-end">
           <div class="navbar-item">
             <div class="buttons">
-              <a class="button is-light">Login(Google Account)</a>
+              <a class="button is-light" @click="googleLogin">Login(Google Account)</a>
             </div>
           </div>
         </div>
@@ -37,6 +37,11 @@ export default {
       isOpen: false
     }
   },
+  methods: {
+    googleLogin: function() {
+      firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+    }
+  }
 };
 </script>
 
