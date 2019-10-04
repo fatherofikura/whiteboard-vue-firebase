@@ -23,7 +23,7 @@ const mutations = {
 
 const actions = {
   selectUser({ commit }, info) {
-    firebase.database().ref('/user/' + info.uid).once('value', function(snapshot) {
+    firebase.database().ref('/user/' + info.uid).on('value', function(snapshot) {
       commit('SELECT_USER', snapshot);
     });
   },

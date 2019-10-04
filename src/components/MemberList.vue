@@ -1,7 +1,7 @@
 <template>
   <div class="memberlist">
     <section>
-      <draggable ref="draggable" class="columns is-multiline" @update="draggableUpdate">
+      <draggable ref="draggable" class="columns is-multiline" @start="draggableStart" @update="draggableUpdate">
         <div v-for="(Member, index) in displayMember" v-bind:key="index">
           <div class="column">
             <b-collapse class="card card-base" v-bind:class="selectedCardClass(Member)">
@@ -109,7 +109,9 @@ export default {
         memberNote: '',
         memberStatusIcon: '',
         memberStatusIconStyle: '',
-      }
+      },
+      draggableStartList : [],
+      draggableUpdateList : [],
     };
   },
   created: function() {
@@ -133,6 +135,8 @@ export default {
   },
   updated: function(){
     var order = this.$store.getters['user/currentUser'].sortedList[this.$store.getters['group/currentSelectedGroup']].list.split(',');
+    console.log("[DEBUG] UpdatedList : %s", order);
+    console.log(order);
     this.$refs.draggable._sortable.sort(order);
   },
   methods: {
@@ -211,7 +215,14 @@ export default {
       this.deleteMember.memberStatusIconStyle = this.calculateStatusIconStyle(this.deleteMember.memberStatus);
       this.isComponentModalActiveForConfirmation = true;
     },
+    draggableStart(event) {
+      this.draggableStartList = this.$refs.draggable._sortable.toArray().toString();
+      console.log("[DEBUG] toArray@Start : %s", this.draggableStartList);
+    },
     draggableUpdate(event) {
+      this.draggableUpdateList = this.$refs.draggable._sortable.toArray().toString();
+      console.log("[DEBUG] toArray@Update : %s", this.draggableUpdateList);
+
       var user = firebase.auth().currentUser;
       console.log("[DEBUG] group : %s", this.$store.getters['group/currentSelectedGroup']);
       if (user) {
