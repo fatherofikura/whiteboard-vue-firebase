@@ -22,6 +22,12 @@ import 'buefy/dist/buefy.css'
 Vue.use(Buefy)
 Vue.config.devtools = true
 
+/* VeeValidate */
+import VeeValidate, { Validator } from 'vee-validate'
+import ja from 'vee-validate/dist/locale/ja' // ローカライズ用パッケージ
+Vue.use(VeeValidate);
+Validator.localize('ja', ja); // ローカライズする
+
 export default {
   name: 'app',
   data () {

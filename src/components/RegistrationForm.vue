@@ -6,15 +6,18 @@
         <p v-else class="modal-card-title">Member Edit</p>
       </header>
       <section class="modal-card-body">
-        <b-field label="Name">
-          <b-input placeholder="Your Name" v-model="name" required></b-input>
+        <b-field label="Name" :type="{'is-danger': errors.has('name')}" :message="errors.first('name')">
+          <b-input placeholder="Your Name" type="text" name="name" v-model="name" v-validate="'required'" ata-vv-as="名前"></b-input>
         </b-field>
-        <b-field label="Phone Number">
-          <b-input placeholder="Your Phone Number" v-model="phoneNumber" type="number"></b-input>
+
+        <b-field label="Phone Number" :type="{'is-danger': errors.has('phoneNumber')}" :message="errors.first('phoneNumber')">
+          <b-input placeholder="Your Phone Number" name="phoneNumber" v-model="phoneNumber" v-validate="'numeric'" ata-vv-as="電話番号"></b-input>
         </b-field>
+
         <b-field label="Position">
           <b-input placeholder="Your Position" v-model="position"></b-input>
         </b-field>
+
       </section>
       <footer class="modal-card-foot">
         <b-button class="button" @click="$parent.close()">
@@ -40,11 +43,15 @@ export default {
       phoneNumber: this.memberPhoneNumber,
       position: this.memberPosition,
       status: this.memberStatus,
-      note : this.memberNote
+      note : this.memberNote,
+      email : null
     }
   },
   methods: {
-    registMemberChild : function() {
+    async registMemberChild() {
+      const isValid = await this.$validator.validate();
+      if(!isValid) return;
+
       var memberInfo = {
         memberUID : this.uid,
         memberName : this.name,
@@ -62,18 +69,3 @@ export default {
   }
 };
 </script>
-
-<style>
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-     -webkit-appearance: none;
-     margin: 0;
-}
-
-input[type="number"] {
-     -moz-appearance:textfield;
-}
-input::-ms-clear {
-     visibility:hidden
-}
-</style>
