@@ -43,8 +43,7 @@ export default {
       phoneNumber: this.memberPhoneNumber,
       position: this.memberPosition,
       status: this.memberStatus,
-      note : this.memberNote,
-      email : null
+      note : this.memberNote
     }
   },
   methods: {

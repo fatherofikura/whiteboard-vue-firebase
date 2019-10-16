@@ -49,22 +49,22 @@
                   </div>
                 </b-tooltip>
               </div>
-              <b-modal :active.sync="isComponentModalActiveForEdit" has-modal-card>
-                <registration-form v-bind="editMember" v-on:edited="setEditMember"></registration-form>
-              </b-modal>
-              <b-modal :active.sync="isComponentModalActiveForConfirmation" has-modal-card>
-                <confirmation-form v-bind="deleteMember" v-on:deleted="setDeleteMember"></confirmation-form>
-              </b-modal>
             </b-collapse>
           </div>
         </div>
         <div class="regist_button" @click="clickRegistButton()">
           <v-fa icon="user-plus" />
         </div>
-        <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
-          <registration-form v-bind="editMember" v-on:registed="setRegistMember"></registration-form>
-        </b-modal>
       </draggable>
+      <b-modal :active.sync="isComponentModalActiveForEdit" has-modal-card>
+        <registration-form v-bind="editMember" v-on:edited="setEditMember"></registration-form>
+      </b-modal>
+      <b-modal :active.sync="isComponentModalActiveForConfirmation" has-modal-card>
+        <confirmation-form v-bind="deleteMember" v-on:deleted="setDeleteMember"></confirmation-form>
+      </b-modal>
+      <b-modal :active.sync="isComponentModalActiveForRegistration" has-modal-card>
+        <registration-form v-bind="editMember" v-on:registed="setRegistMember"></registration-form>
+      </b-modal>
     </section>
     <br>
     <br>
