@@ -4,7 +4,7 @@
       <div class="catchcopy_content">
         <h1>Welcome to Whiteboard.</h1>
         <h2>
-          Whiteboardはオンラインで対象メンバーの在籍管理を行うサービスです。<br>
+          Whiteboardはオンラインで対象メンバーの在席管理を行うサービスです。<br>
           サービスを利用するためにはGoogleアカウントが必要です。
         </h2>
         <div class="btn_login">
@@ -19,9 +19,9 @@
             <p class="card-header-title">グループ単位のメンバー管理</p>
           </header>
           <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="../assets/Test001.gif" alt="Placeholder image">
-            </figure>
+            <vue-freezeframe :options="{ overlay: true }">
+              <img src="../assets/sample001.gif" alt="Placeholder image">
+            </vue-freezeframe>
           </div>
           <div class="card-content">
             <div class="content">
@@ -36,9 +36,9 @@
             <p class="card-header-title">メンバー登録＆修正＆削除</p>
           </header>
           <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-            </figure>
+            <vue-freezeframe :options="{ overlay: true }">
+              <img src="../assets/sample002.gif" alt="Placeholder image">
+            </vue-freezeframe>
           </div>
           <div class="card-content">
             <div class="content">
@@ -53,9 +53,9 @@
             <p class="card-header-title">行き先の変更</p>
           </header>
           <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-            </figure>
+            <vue-freezeframe :options="{ overlay: true }">
+              <img src="../assets/sample003.gif" alt="Placeholder image">
+            </vue-freezeframe>
           </div>
           <div class="card-content">
             <div class="content">

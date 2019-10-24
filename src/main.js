@@ -7,12 +7,15 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import store from './store/store';
+import VueFreezeframe from 'vue-freezeframe';
 
 // アイコンを読み込み
 library.add(fas, far, fab);
 
 // Vueコンポーネントを作成
 Vue.component('v-fa', FontAwesomeIcon);
+
+Vue.use(VueFreezeframe);
 
 // Initialize Firebase
 var config = {

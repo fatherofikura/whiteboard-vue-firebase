@@ -5,10 +5,17 @@
         <div v-for="(Member, index) in displayMember" v-bind:key="index">
           <div class="column">
             <b-collapse class="card card-base" v-bind:class="selectedCardClass(Member)">
-              <div class="card-header" role="button" @click="clickCard(Member)">
-                <p class="card-header-title card-header-title-base" v-bind:style="setStatusIconStyle(Member)">
+              <div class="relative card-header" role="button" @click="clickCard(Member)">
+                <p class="card-header-title card-header-title-base" v-bind:style="setStatusIconStyle(Member)" v-if="!(Member.note == '') && !(typeof(Member.note) == 'undefined')">
+                  <b-tooltip v-bind:label="Member.note" type="is-dark" position="is-right">
+                    <v-fa class="icon-base fa-fw" v-bind:icon="setStatusIcon(Member)" />
+                    <span class="icon-note-base absolute">●</span>
+                  </b-tooltip>
+                  <span class="header-name">{{ Member.name }}</span>
+                </p>
+                <p class="card-header-title card-header-title-base" v-bind:style="setStatusIconStyle(Member)" v-else>
                   <v-fa class="icon-base" v-bind:icon="setStatusIcon(Member)" />
-                  <span>{{ Member.name }}</span>
+                  <span class="header-name">{{ Member.name }}</span>
                 </p>
               </div>
               <div class="card-content card-content-base" @click="clickCard(Member)">
@@ -27,13 +34,6 @@
                       </div>
                     </b-tooltip>
                     <div class="tag_value">{{ Member.phoneNumber }}</div>
-                    <br>
-                    <b-tooltip class="tag_hint" label="Note" type="is-dark" position="is-right">
-                      <div class="tag_key">
-                        <v-fa icon="bookmark" />
-                      </div>
-                    </b-tooltip>
-                    <div class="tag_value">{{ Member.note }}</div>
                   </div>
                 </div>
               </div>
@@ -343,7 +343,13 @@ export default {
   color: #4a4a4a;
 }
 .icon-base{
-  margin: 0px 5px 0px 0px;
+  margin: 0px 0px 0px 0px;
+}
+.icon-comment-base{
+  margin: 0px 10px 0px 0px;
+}
+.header-name{
+  margin-left: 10px;
 }
 .tag_base{
   letter-spacing: -.4em; /* 文字間を詰めて隙間をなくす */
@@ -409,6 +415,15 @@ export default {
   line-height: 56px;/*＝幅と高さ*/
 }
 .regist_button:hover{
-    box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);/*浮き上がるように*/
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);/*浮き上がるように*/
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+  left: 20px;
+  bottom: 10px;
+  font-size: 12px;
 }
 </style>
