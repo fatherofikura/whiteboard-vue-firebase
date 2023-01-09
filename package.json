@@ -17,7 +17,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "buefy": "^0.7.7",
     "firebase": "^6.2.0",
-    "firebase-admin": "^8.1.0",
+    "firebase-admin": "^11.4.1",
     "vee-validate": "^2.2.15",
     "vue": "^2.6.10",
     "vue-freezeframe": "^4.0.0",
